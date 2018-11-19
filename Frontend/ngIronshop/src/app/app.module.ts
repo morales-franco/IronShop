@@ -10,6 +10,9 @@ import { PreloaderComponent } from './shared/preloader/preloader.component';
 import { Error404Component } from './shared/error/error404/error404.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './pages/home/home.component';
+import { LayoutComponent } from './shared/layout/layout.component';
+import { LoginComponent } from './pages/account/login/login.component';
+import { RegisterComponent } from './pages/account/register/register.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { HomeComponent } from './pages/home/home.component';
     BreadcrumbComponent,
     PreloaderComponent,
     Error404Component,
-    HomeComponent
+    HomeComponent,
+    LayoutComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
