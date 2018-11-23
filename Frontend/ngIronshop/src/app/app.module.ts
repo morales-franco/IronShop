@@ -1,35 +1,35 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+//Modules
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './shared/header/header.component';
-import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { BreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
-import { PreloaderComponent } from './shared/preloader/preloader.component';
-import { Error404Component } from './shared/error/error404/error404.component';
+import { PageModule } from './pages/pages.module';
+
+
+//Router
 import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './pages/home/home.component';
-import { LayoutComponent } from './shared/layout/layout.component';
-import { LoginComponent } from './pages/account/login/login.component';
-import { RegisterComponent } from './pages/account/register/register.component';
+
+
+//Components
+import { LoginComponent } from './account/login/login.component';
+import { RegisterComponent } from './account/register/register.component';
+
+
+/*
+Look at the module imports array. 
+Notice that the AppRoutingModule is last. Most importantly, it comes after the PageModule.
+AppRoutingModule: Siempre tiene que ir al final
+ */
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    SidebarComponent,
-    FooterComponent,
-    BreadcrumbComponent,
-    PreloaderComponent,
-    Error404Component,
-    HomeComponent,
-    LayoutComponent,
     LoginComponent,
     RegisterComponent
   ],
   imports: [
     BrowserModule,
+    PageModule,
     AppRoutingModule
   ],
   providers: [],
