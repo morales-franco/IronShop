@@ -16,6 +16,7 @@ import { RegisterComponent } from './account/register/register.component';
 
 
 /*
+@FM:
 Look at the module imports array. 
 Notice that the AppRoutingModule is last. Most importantly, it comes after the PageModule.
 AppRoutingModule: Siempre tiene que ir al final

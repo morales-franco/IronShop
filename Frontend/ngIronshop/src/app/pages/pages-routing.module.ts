@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
+import { ProgressComponent } from './progress/progress.component';
 
 
 
@@ -11,6 +12,7 @@ const pagesRoutes: Routes = [
     component: LayoutComponent,
     children: [
       { path: 'home', component: HomeComponent },
+      { path: 'progress', component: ProgressComponent },
       { path: '', redirectTo: '/home', pathMatch: 'full' }
     ]
   }

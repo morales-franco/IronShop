@@ -7,7 +7,7 @@ import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
 
 
-/*
+/*@FM:
 (1)
 Estas son rutas principales cuando solamente tenes un router outlet.
 
