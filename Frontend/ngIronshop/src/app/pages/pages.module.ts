@@ -9,6 +9,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { ProgressComponent } from './progress/progress.component';
 import { IncrementadorComponent } from '../components/incrementador/incrementador.component';
 import { ChartDoughnutComponent } from '../components/chart-doughnut/chart-doughnut.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 
 
@@ -19,7 +20,8 @@ import { ChartDoughnutComponent } from '../components/chart-doughnut/chart-dough
     LayoutComponent,
     ProgressComponent,
     IncrementadorComponent,
-    ChartDoughnutComponent
+    ChartDoughnutComponent,
+    AccountSettingsComponent
   ],
   imports:[
     SharedModule,

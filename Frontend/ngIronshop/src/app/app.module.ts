@@ -1,10 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 //Modules
 import { AppComponent } from './app.component';
 import { PageModule } from './pages/pages.module';
 
+//Module Services
+import { ServiceModule } from './services/service.module';
 
 //Router
 import { AppRoutingModule } from './app-routing.module';
@@ -14,11 +17,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
 
+
+
 /*
 @FM:
 Look at the module imports array. 
 Notice that the AppRoutingModule is last. Most importantly, it comes after the PageModule.
-AppRoutingModule: Siempre tiene que ir al final
+AppRoutingModule: Siempre tiene que ir al final de las demas hojas de routeo
  */
 
 @NgModule({
@@ -26,11 +31,14 @@ AppRoutingModule: Siempre tiene que ir al final
     AppComponent,
     LoginComponent,
     RegisterComponent
+    
   ],
   imports: [
     BrowserModule,
     PageModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ServiceModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

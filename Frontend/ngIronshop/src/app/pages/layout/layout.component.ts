@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+declare function  initPlugins();
 
 @Component({
   selector: 'app-layout',
@@ -19,6 +20,7 @@ export class LayoutComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    initPlugins();
   }
 
 }
