@@ -10,6 +10,8 @@ import { ProgressComponent } from './progress/progress.component';
 import { IncrementadorComponent } from '../components/incrementador/incrementador.component';
 import { ChartDoughnutComponent } from '../components/chart-doughnut/chart-doughnut.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { PromesasComponent } from './promesas/promesas.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 
 
@@ -21,7 +23,9 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
     ProgressComponent,
     IncrementadorComponent,
     ChartDoughnutComponent,
-    AccountSettingsComponent
+    AccountSettingsComponent,
+    PromesasComponent,
+    RxjsComponent
   ],
   imports:[
     SharedModule,
