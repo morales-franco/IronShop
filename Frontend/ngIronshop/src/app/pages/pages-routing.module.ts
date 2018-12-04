@@ -15,11 +15,11 @@ const pagesRoutes: Routes = [
   { path:'', 
     component: LayoutComponent,
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'progress', component: ProgressComponent },
-      { path: 'account-settings', component: AccountSettingsComponent },
-      { path: 'promesas', component: PromesasComponent },
-      { path: 'rxjs', component: RxjsComponent },
+      { path: 'home', component: HomeComponent, data : { title : 'Home'} },
+      { path: 'progress', component: ProgressComponent, data : { title : 'Progress'} },
+      { path: 'account-settings', component: AccountSettingsComponent, data : { title : 'Configuración'} },
+      { path: 'promesas', component: PromesasComponent, data : { title : 'Promesas'} },
+      { path: 'rxjs', component: RxjsComponent, data : { title : 'RxJs - Observables'} },
       { path: '', redirectTo: '/home', pathMatch: 'full' }
     ]
   }
