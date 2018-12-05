@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronShop.Api", "IronShop.Api\IronShop.Api.csproj", "{9AAC666D-6725-444B-A11B-75AD870815BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AAC666D-6725-444B-A11B-75AD870815BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AAC666D-6725-444B-A11B-75AD870815BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AAC666D-6725-444B-A11B-75AD870815BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AAC666D-6725-444B-A11B-75AD870815BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5DD0D860-659E-4693-98F1-1248E74755B1}
+	EndGlobalSection
+EndGlobal
