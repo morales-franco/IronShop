@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IronShop.Api.Dtos
+namespace IronShop.Api.Core
 {
-    public class UserDto
+    interface IUnitOfWork
     {
-
     }
 }
