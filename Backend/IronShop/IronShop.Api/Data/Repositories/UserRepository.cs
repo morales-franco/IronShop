@@ -10,16 +10,16 @@ namespace IronShop.Api.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UserRepository(IApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task Add(User user)
+        public void Add(User user)
         {
-            await _context.User.AddAsync(user);
+             _context.User.Add(user);
         }
 
         public async Task<IEnumerable<User>> GetAll()
@@ -36,6 +36,15 @@ namespace IronShop.Api.Data.Repositories
         {
             return await _context.User.FindAsync(id);
         }
-       
+
+        public void Update(User user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+        }
+
+        public void Delete(User user)
+        {
+            _context.Set<User>().Remove(user);
+        }
     }
 }

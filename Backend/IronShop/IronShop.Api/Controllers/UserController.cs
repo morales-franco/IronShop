@@ -69,6 +69,7 @@ namespace IronShop.Api.Controllers
             return model;
         }
 
+        //POST: api/User
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -80,12 +81,54 @@ namespace IronShop.Api.Controllers
             }
 
             var userEntity = MapDtoToEntity(user);
-            await _unitOfWork.Users.Add(userEntity);
+            _unitOfWork.Users.Add(userEntity);
             await _unitOfWork.Commit();
 
             return CreatedAtAction(nameof(GetById),
                 new { id = userEntity.UserId }, userEntity);
         }
+
+        // PUT: api/User/1
+        [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Update(long id, UserDto user)
+        {
+            if (id != user.UserId)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userEntity = MapDtoToEntity(user);
+            _unitOfWork.Users.Update(userEntity);
+            await _unitOfWork.Commit();
+
+            return NoContent();
+        }
+
+        // DELETE: api/User/1
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var user = await _unitOfWork.Users.GetById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.Users.Delete(user);
+            await _unitOfWork.Commit();
+
+            return NoContent();
+        }
+
 
         private UserDto MapEntityToDto(User user)
         {

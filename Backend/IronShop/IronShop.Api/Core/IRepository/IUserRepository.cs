@@ -11,7 +11,8 @@ namespace IronShop.Api.Core.IRepository
         Task<IEnumerable<User>> GetAll();
         Task<User> GetByEmail(string email);
         Task<User> GetById(int id);
-        Task Add(User user);
-        
+        void Add(User user);
+        void Update(User user);
+        void Delete(User user);
     }
 }
