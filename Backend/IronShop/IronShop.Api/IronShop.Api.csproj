@@ -5,13 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Core\IRepositories\" />
-    <Folder Include="Data\Repositories\" />
+    <Compile Remove="Core\IRepositories\**" />
+    <Content Remove="Core\IRepositories\**" />
+    <EmbeddedResource Remove="Core\IRepositories\**" />
+    <None Remove="Core\IRepositories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
 </Project>
