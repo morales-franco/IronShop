@@ -42,7 +42,7 @@ namespace IronShop.Api.Data.Repositories
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        public void Delete(User user)
+        public void Remove(User user)
         {
             _context.Set<User>().Remove(user);
         }

@@ -6,6 +6,7 @@ using AutoMapper;
 using IronShop.Api.Core;
 using IronShop.Api.Core.Dtos;
 using IronShop.Api.Core.Entities;
+using IronShop.Api.Core.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +17,13 @@ namespace IronShop.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _service;
         private readonly IMapper _mapper;
 
-        public UserController(IUnitOfWork unitOfWork,
+        public UserController(IUserService service,
             IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _service = service;
             _mapper = mapper;
         }
 
@@ -31,7 +32,7 @@ namespace IronShop.Api.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<UserDto>>> GetAll()
         {
-            var users = await _unitOfWork.Users.GetAll();
+            var users = await _service.GetAll();
             var model = MapEntityToDto(users);
             return model;
         }
@@ -42,7 +43,7 @@ namespace IronShop.Api.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<UserDto>> GetByEmail(string email)
         {
-            var user = await _unitOfWork.Users.GetByEmail(email);
+            var user = await _service.GetByEmail(email);
             if (user == null)
             {
                 return NotFound();
@@ -59,7 +60,7 @@ namespace IronShop.Api.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<UserDto>> GetById(int id)
         {
-            var user = await _unitOfWork.Users.GetById(id);
+            var user = await _service.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -81,8 +82,7 @@ namespace IronShop.Api.Controllers
             }
 
             var userEntity = MapDtoToEntity(user);
-            _unitOfWork.Users.Add(userEntity);
-            await _unitOfWork.Commit();
+            await _service.Insert(userEntity);
 
             return CreatedAtAction(nameof(GetById),
                 new { id = userEntity.UserId }, userEntity);
@@ -105,8 +105,7 @@ namespace IronShop.Api.Controllers
             }
 
             var userEntity = MapDtoToEntity(user);
-            _unitOfWork.Users.Update(userEntity);
-            await _unitOfWork.Commit();
+            await _service.Update(userEntity);
 
             return NoContent();
         }
@@ -117,14 +116,13 @@ namespace IronShop.Api.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await _unitOfWork.Users.GetById(id);
+            var user = await _service.GetById(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _unitOfWork.Users.Delete(user);
-            await _unitOfWork.Commit();
+            await _service.Delete(user);
 
             return NoContent();
         }
