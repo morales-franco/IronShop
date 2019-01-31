@@ -38,7 +38,12 @@ namespace IronShop.Api
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("DbConnection")));
 
-
+            /*
+             * https://stackoverflow.com/questions/38138100/what-is-the-difference-between-services-addtransient-service-addscoped-and-serv
+             * Transient objects are always different; a new instance is provided to every controller and every service.
+             * Scoped objects are the same within a request, but different across different requests
+             * Singleton objects are the same for every object and every request (regardless of whether an instance is provided in ConfigureServices)
+             */
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
         }

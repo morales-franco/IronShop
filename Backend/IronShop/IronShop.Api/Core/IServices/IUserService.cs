@@ -11,8 +11,9 @@ namespace IronShop.Api.Core.IServices
         Task<IEnumerable<User>> GetAll();
         Task<User> GetByEmail(string email);
         Task<User> GetById(int id);
-        Task Insert(User user);
+        Task Register(User user);
         Task Update(User user);
         Task Delete(User user);
+        Task ChangePassword(User userEntity);
     }
 }

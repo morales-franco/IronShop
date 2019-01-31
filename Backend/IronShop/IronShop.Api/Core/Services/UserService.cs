@@ -2,6 +2,7 @@
 using IronShop.Api.Core.IServices;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,15 +37,44 @@ namespace IronShop.Api.Core.Services
             return await _unitOfWork.Users.GetById(id);
         }
 
-        public async Task Insert(User user)
+        public async Task Register(User user)
         {
+            // the User entity is only responsible for its own validity, not the validity of the set of others users.
+            if (!(await IsEmailUnique(user.Email)))
+                throw new ValidationException("Email address is already registered");
+
             _unitOfWork.Users.Add(user);
-             await _unitOfWork.Commit();
+            await _unitOfWork.Commit();
+        }
+
+        private async Task<bool> IsEmailUnique(string email)
+        {
+            var isUnique = true;
+            var user = await _unitOfWork.Users.GetByEmail(email);
+
+            if (user != null)
+                isUnique = false;
+
+            return isUnique;
         }
 
         public async Task Update(User user)
         {
-            _unitOfWork.Users.Update(user);
+            var userBd = await _unitOfWork.Users.GetById(user.UserId);
+
+            userBd.ValidateChangeEmail(user.Email);
+            userBd.Modify(user.FullName, user.Email, user.Role);
+
+            _unitOfWork.Users.Update(userBd);
+            await _unitOfWork.Commit();
+        }
+
+        public async Task ChangePassword(User user)
+        {
+            var userBd = await _unitOfWork.Users.GetById(user.UserId);
+            userBd.ChangePassword(user.Password);
+
+            _unitOfWork.Users.Update(userBd);
             await _unitOfWork.Commit();
         }
     }

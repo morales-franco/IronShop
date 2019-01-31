@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -71,28 +72,49 @@ namespace IronShop.Api.Controllers
         }
 
         //POST: api/User
-        [HttpPost]
+        [HttpPost("Register")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<UserDto>> Create(UserDto user)
+        public async Task<ActionResult<UserDto>> Register(RegisterUserDto user)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userEntity = new User(user.FullName, user.Email, user.Password, user.Role);
+                await _service.Register(userEntity);
+
+                return CreatedAtAction(nameof(GetById),
+                    new { id = userEntity.UserId }, userEntity);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Change for return 500 code not only 400
+                HandleException(ex);
             }
 
-            var userEntity = MapDtoToEntity(user);
-            await _service.Insert(userEntity);
+            return BadRequest(ModelState);
+        }
 
-            return CreatedAtAction(nameof(GetById),
-                new { id = userEntity.UserId }, userEntity);
+        private void HandleException(Exception ex)
+        {
+            if (ex is ValidationException)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            else
+            {
+                //Utils.Services.Logger.Error(ex);
+                ModelState.AddModelError("", "Se ha producido un error interno por favor consulte al administrador");
+            }
         }
 
         // PUT: api/User/1
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Update(long id, UserDto user)
+        public async Task<IActionResult> Update(long id, ChangeUserDto user)
         {
             if (id != user.UserId)
             {
@@ -104,8 +126,8 @@ namespace IronShop.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userEntity = MapDtoToEntity(user);
-            await _service.Update(userEntity);
+            var userToChange = new User(user.UserId, user.FullName, user.Email, user.Role);
+            await _service.Update(userToChange);
 
             return NoContent();
         }
@@ -127,6 +149,22 @@ namespace IronShop.Api.Controllers
             return NoContent();
         }
 
+        //POST: api/ChangePassword
+        [HttpPost()]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<UserDto>> ChangePassword(ResetPasswordDto user)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var userEntity = new User(user.UserId, user.Password);
+            await _service.ChangePassword(userEntity);
+
+            return CreatedAtAction(nameof(GetById),
+                new { id = userEntity.UserId }, userEntity);
+        }
+
 
         private UserDto MapEntityToDto(User user)
         {
@@ -142,5 +180,6 @@ namespace IronShop.Api.Controllers
         {
             return _mapper.Map<UserDto, User>(user);
         }
+
     }
 }
