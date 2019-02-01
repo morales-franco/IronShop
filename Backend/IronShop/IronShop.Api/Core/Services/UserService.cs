@@ -39,6 +39,8 @@ namespace IronShop.Api.Core.Services
 
         public async Task Register(User user)
         {
+            user.EncryptPassword();
+
             // the User entity is only responsible for its own validity, not the validity of the set of others users.
             if (!(await IsEmailUnique(user.Email)))
                 throw new ValidationException("Email address is already registered");
@@ -76,6 +78,19 @@ namespace IronShop.Api.Core.Services
 
             _unitOfWork.Users.Update(userBd);
             await _unitOfWork.Commit();
+        }
+
+        public async Task<User> Login(User user)
+        {
+            var userBd = await _unitOfWork.Users.GetByEmail(user.Email);
+
+            if (userBd == null)
+                throw new ValidationException("Invalid Credentials");
+
+            if(!userBd.IsMyPassword(user.Password))
+                throw new ValidationException("Invalid Credentials");
+
+            return userBd;
         }
     }
 }

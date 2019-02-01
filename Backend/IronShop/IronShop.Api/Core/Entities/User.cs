@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using IronShop.Api.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -56,17 +57,30 @@ namespace IronShop.Api.Core.Entities
             Password = password;
         }
 
+        public User(string email, string password)
+        {
+            Email = email;
+            Password = password;
+        }
+
         public void ChangeRole(string role)
         {
             Role = role;
         }
 
+        public void EncryptPassword()
+        {
+            Password = HashHelper.Create(Password);
+        }
+
         public void ChangePassword(string newPassword)
         {
-            if (Password == newPassword)
+            var hashPassword = HashHelper.Create(newPassword);
+
+            if (Password == hashPassword)
                 throw new ValidationException("New password has already been used");
 
-            Password = newPassword;
+            Password = hashPassword;
         }
 
         public void Modify(string fullName, string email, string role)
@@ -80,6 +94,11 @@ namespace IronShop.Api.Core.Entities
         {
             if (Email.ToLower() != email.ToLower())
                 throw new ValidationException("You can't change email address");
+        }
+
+        internal bool IsMyPassword(string password)
+        {
+            return Password == HashHelper.Create(password);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using IronShop.Api.Core;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IronShop.Api
 {
@@ -30,6 +32,21 @@ namespace IronShop.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //enable cors
+            services.AddCors();
+
+            //Configuramos tokens
+            services.AddAuthentication()
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidIssuer = Configuration["Tokens:Issuer"],
+                        ValidAudience = Configuration["Tokens:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                    };
+                });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAutoMapper();
@@ -46,6 +63,7 @@ namespace IronShop.Api
              */
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITokenService, TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +73,15 @@ namespace IronShop.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            //Habilitamos Auth --> Before MVC!
+            app.UseAuthentication();
+
+            //Confiramos Cors
+            app.UseCors(builder =>
+                builder.AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowAnyOrigin()
+            );
 
             app.UseMvc();
         }

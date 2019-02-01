@@ -8,6 +8,8 @@ using IronShop.Api.Core;
 using IronShop.Api.Core.Dtos;
 using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.IServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +18,7 @@ namespace IronShop.Api.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
@@ -71,7 +74,7 @@ namespace IronShop.Api.Controllers
             return model;
         }
 
-        //POST: api/User
+        //POST: api/Register
         [HttpPost("Register")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -150,7 +153,7 @@ namespace IronShop.Api.Controllers
         }
 
         //POST: api/ChangePassword
-        [HttpPost()]
+        [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> ChangePassword(ResetPasswordDto user)
@@ -164,7 +167,6 @@ namespace IronShop.Api.Controllers
             return CreatedAtAction(nameof(GetById),
                 new { id = userEntity.UserId }, userEntity);
         }
-
 
         private UserDto MapEntityToDto(User user)
         {
@@ -180,6 +182,8 @@ namespace IronShop.Api.Controllers
         {
             return _mapper.Map<UserDto, User>(user);
         }
+
+
 
     }
 }

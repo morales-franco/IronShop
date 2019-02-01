@@ -46,4 +46,12 @@ namespace IronShop.Api.Core.Dtos
         public string Password { get; set; }
     }
 
+    public class LoginDto
+    {
+        [Required, MaxLength(256), EmailAddress]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
+    }
+
 }

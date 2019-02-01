@@ -14,6 +14,7 @@ namespace IronShop.Api.Core.IServices
         Task Register(User user);
         Task Update(User user);
         Task Delete(User user);
-        Task ChangePassword(User userEntity);
+        Task ChangePassword(User user);
+        Task<User> Login(User user);
     }
 }
