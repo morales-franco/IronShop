@@ -18,7 +18,7 @@ namespace IronShop.Api.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
@@ -36,6 +36,19 @@ namespace IronShop.Api.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<UserDto>>> GetAll()
         {
+            var currentUser = HttpContext.User;
+
+            var hasUserId = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+            var hasEmailAddress= currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.Email);
+            var hasRole = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.Role);
+
+            var role = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Role);
+            var email = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Email);
+            var userId = currentUser.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+            var isAdmin = currentUser.IsInRole("ADMIN");
+            
+
             var users = await _service.GetAll();
             var model = MapEntityToDto(users);
             return model;
@@ -153,7 +166,7 @@ namespace IronShop.Api.Controllers
         }
 
         //POST: api/ChangePassword
-        [HttpPost]
+        [HttpPost("ChangePassword")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> ChangePassword(ResetPasswordDto user)

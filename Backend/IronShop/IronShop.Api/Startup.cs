@@ -8,6 +8,7 @@ using IronShop.Api.Core;
 using IronShop.Api.Core.IServices;
 using IronShop.Api.Core.Services;
 using IronShop.Api.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -35,12 +36,21 @@ namespace IronShop.Api
             //enable cors
             services.AddCors();
 
-            //Configuramos tokens
-            services.AddAuthentication()
+            //Configuramos Json Web tokens
+
+            /*
+             * Register our Authentication Schema --> We use JWT: JwtBearerDefaults.AuthenticationScheme
+             * Configurer our Authentication Schema --> We specify needed parameters for consider a token valid
+             */
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
                 .AddJwtBearer(cfg =>
                 {
-                    cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
                     {
+                        ValidateIssuer = true, //validate the server that created that token
+                        ValidateAudience = true, //ensure that the recipient of the token is authorized to receive it
+                        ValidateLifetime = true, //check that the token is not expired
+                        ValidateIssuerSigningKey = true, //verify that the key used to sign the incoming token is part of a list of trusted keys
                         ValidIssuer = Configuration["Tokens:Issuer"],
                         ValidAudience = Configuration["Tokens:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
