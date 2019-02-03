@@ -16,9 +16,13 @@ namespace IronShop.Api.Data
 
         public DbSet<User> User { get; set; }
 
+        public DbSet<Product> Product { get; set; }
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
     }
 }

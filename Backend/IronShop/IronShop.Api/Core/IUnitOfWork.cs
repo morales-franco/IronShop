@@ -8,7 +8,8 @@ namespace IronShop.Api.Core
 {
     public interface IUnitOfWork
     {
-         IUserRepository Users { get; }
+        IUserRepository Users { get; }
+        IProductRepository Products { get; }
         Task Commit();
     }
 }

@@ -14,7 +14,9 @@ namespace IronShop.Api.AppStart
         {
             CreateMap<User, UserDto>()
                 .ReverseMap();
-                
+
+            CreateMap<Product, ProductDto>();
+
         }
     }
 }

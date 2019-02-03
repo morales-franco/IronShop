@@ -71,9 +71,11 @@ namespace IronShop.Api
              * Scoped objects are the same within a request, but different across different requests
              * Singleton objects are the same for every object and every request (regardless of whether an instance is provided in ConfigureServices)
              */
+            services.AddHttpContextAccessor();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IProductService, ProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -16,5 +16,6 @@ namespace IronShop.Api.Core.IServices
         Task Delete(User user);
         Task ChangePassword(User user);
         Task<User> Login(User user);
+        Task<User> GetCurrentUser();
     }
 }

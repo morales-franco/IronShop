@@ -13,12 +13,13 @@ namespace IronShop.Api.Data
         private readonly ApplicationDbContext _dbContext;
         public IUserRepository Users { get; private set; }
 
+        public IProductRepository Products { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _dbContext = context;
             Users = new UserRepository(context);
-
+            Products = new ProductRepository(context);
         }
 
         public async Task Commit()

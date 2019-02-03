@@ -1,5 +1,6 @@
 ﻿using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.IServices;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,9 +12,13 @@ namespace IronShop.Api.Core.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UserService(IUnitOfWork unitOfWork)
+        private readonly IHttpContextAccessor _httpContext;
+
+        public UserService(IUnitOfWork unitOfWork,
+                           IHttpContextAccessor context)
         {
             _unitOfWork = unitOfWork;
+            _httpContext = context;
         }
 
         public async Task Delete(User user)
@@ -91,6 +96,16 @@ namespace IronShop.Api.Core.Services
                 throw new ValidationException("Invalid Credentials");
 
             return userBd;
+        }
+
+        public async Task<User> GetCurrentUser()
+        {
+            var currentUser = _httpContext.HttpContext.User;
+            var userId = currentUser.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+
+            var user = await GetById(Convert.ToInt32(userId));
+            return user;
+
         }
     }
 }

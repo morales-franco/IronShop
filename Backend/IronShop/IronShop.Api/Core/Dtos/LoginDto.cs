@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace IronShop.Api.Core.Dtos
 {
-    public class UserDto : RegisterUserDto
+    public class LoginDto
     {
+        [Required, MaxLength(256), EmailAddress]
+        public string Email { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string Password { get; set; }
     }
-
 }
