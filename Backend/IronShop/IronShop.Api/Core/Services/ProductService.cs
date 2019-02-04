@@ -37,8 +37,8 @@ namespace IronShop.Api.Core.Services
 
         public async Task Delete(Product product)
         {
-            _unitOfWork.Products.Remove(product);
-            await _unitOfWork.Commit();
+            product.MarkAsDeleted();
+            await Update(product);
         }
 
         public async Task<IEnumerable<Product>> GetAll()

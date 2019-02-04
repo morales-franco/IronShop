@@ -10,6 +10,7 @@ namespace IronShop.Api.Core
     {
         IUserRepository Users { get; }
         IProductRepository Products { get; }
+        IOrderRepository Orders { get; }
         Task Commit();
     }
 }

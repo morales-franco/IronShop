@@ -15,11 +15,15 @@ namespace IronShop.Api.Data
 
         public IProductRepository Products { get; private set; }
 
+        public IOrderRepository Orders { get; private set; }
+        
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _dbContext = context;
             Users = new UserRepository(context);
             Products = new ProductRepository(context);
+            Orders = new OrderRepository(context);
         }
 
         public async Task Commit()

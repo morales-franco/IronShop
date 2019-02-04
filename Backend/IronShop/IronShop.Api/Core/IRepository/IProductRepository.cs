@@ -12,6 +12,5 @@ namespace IronShop.Api.Core.IRepository
         Task<Product> GetById(int id);
         void Add(Product product);
         void Update(Product product);
-        void Remove(Product product);
     }
 }

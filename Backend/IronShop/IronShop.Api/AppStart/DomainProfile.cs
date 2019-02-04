@@ -17,6 +17,9 @@ namespace IronShop.Api.AppStart
 
             CreateMap<Product, ProductDto>();
 
+            CreateMap<Order, OrderDto>();
+
+            CreateMap<OrderItem, OrderItemDto>();
         }
     }
 }

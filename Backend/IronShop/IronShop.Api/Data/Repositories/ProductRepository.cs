@@ -24,17 +24,14 @@ namespace IronShop.Api.Data.Repositories
 
         public async Task<IEnumerable<Product>> GetAll()
         {
-            return await _context.Product.ToListAsync();
+            return await _context.Product
+                .Where(p => !p.Deleted)
+                .ToListAsync();
         }
 
         public async Task<Product> GetById(int id)
         {
-            return await _context.Product.FindAsync(id);
-        }
-
-        public void Remove(Product product)
-        {
-            _context.Set<Product>().Remove(product);
+            return await _context.Product.FirstOrDefaultAsync(p => !p.Deleted && p.ProductId == id);
         }
 
         public void Update(Product product)

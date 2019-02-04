@@ -16,7 +16,7 @@ namespace IronShop.Api.Core.Entities
         public string Description { get; private set; }
         public string AuditUserName { get; set; }
         public DateTime AuditDate { get;  set; }
-
+        public bool Deleted { get; private set; }
 
         public Product()
         {
@@ -35,6 +35,12 @@ namespace IronShop.Api.Core.Entities
             Price = price;
             Title = title;
             Description = description;
+            Deleted = false;
+        }
+
+        public void MarkAsDeleted()
+        {
+            Deleted = true;
         }
 
     }
