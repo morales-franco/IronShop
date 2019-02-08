@@ -34,7 +34,7 @@ namespace IronShop.Api.Controllers
         // GET: api/User
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<List<UserDto>>> GetAll()
+        public async Task<ActionResult<List<UserDto>>> GetAll(int offset = 0, int limit = 25 )
         {
             var currentUser = HttpContext.User;
 
@@ -49,7 +49,7 @@ namespace IronShop.Api.Controllers
             var isAdmin = currentUser.IsInRole("ADMIN");
             
 
-            var users = await _service.GetAll();
+            var users = await _service.GetAll(offset, limit);
             var model = MapEntityToDto(users);
             return model;
         }

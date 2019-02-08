@@ -9,6 +9,7 @@ namespace IronShop.Api.Core.IServices
     public interface IUserService
     {
         Task<IEnumerable<User>> GetAll();
+        Task<IEnumerable<User>> GetAll(int offset, int limit);
         Task<User> GetByEmail(string email);
         Task<User> GetById(int id);
         Task Register(User user);

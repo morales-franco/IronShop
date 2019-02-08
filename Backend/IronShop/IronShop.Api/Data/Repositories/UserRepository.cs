@@ -1,9 +1,11 @@
 ﻿using IronShop.Api.Core.Entities;
+using IronShop.Api.Core.Entities.Extensions;
 using IronShop.Api.Core.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace IronShop.Api.Data.Repositories
@@ -19,12 +21,28 @@ namespace IronShop.Api.Data.Repositories
 
         public void Add(User user)
         {
-             _context.User.Add(user);
+            _context.User.Add(user);
         }
 
         public async Task<IEnumerable<User>> GetAll()
         {
             return await _context.User.ToListAsync();
+        }
+        public async Task<PaginableList<User>> GetPagedList(PageParameters<User> pageParameter)
+        {
+            PaginableList<User> dataSource = new PaginableList<User>();
+
+            dataSource.Rows = await _context.User
+                                .Where(pageParameter.Filter)
+                                .OrderBy(pageParameter.Sort)
+                                .Skip(pageParameter.PageNumber * pageParameter.RowsPerPage)
+                                .Take(pageParameter.RowsPerPage)
+                                .ToListAsync();
+
+
+            dataSource.TotalRows = await _context.User.Where(pageParameter.Filter).CountAsync();
+
+            return dataSource;
         }
 
         public async Task<User> GetByEmail(string email)
