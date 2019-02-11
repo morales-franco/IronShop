@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IronShop.Api.Core.Entities
+namespace IronShop.Api.Core.Entities.Base
 {
     public class IronToken
     {

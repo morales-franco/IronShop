@@ -59,17 +59,22 @@ namespace IronShop.Api.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Order>> Create(OrderDto order)
+        public async Task<ActionResult<OrderDto>> Create([FromBody]IList<OrderItemDto> items)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var newOrder = await _service.Create(order);
+                if (items == null || !items.Any())
+                    throw new ValidationException("Items are required");
+
+                var newOrder = new Order(MapItemsDtoToEntity(items));
+
+                newOrder = await _service.Create(newOrder);
 
                 return CreatedAtAction(nameof(GetById),
-                    new { id = newOrder.OrderId }, newOrder);
+                    new { id = newOrder.OrderId }, MapEntityToDto(newOrder));
             }
             catch (Exception ex)
             {
@@ -78,6 +83,16 @@ namespace IronShop.Api.Controllers
             }
 
             return BadRequest(ModelState);
+        }
+
+        private List<OrderItem> MapItemsDtoToEntity(IList<OrderItemDto> items)
+        {
+            return _mapper.Map<IList<OrderItemDto>, List<OrderItem>>(items);
+        }
+
+        private Order MapDtoToEntity(OrderDto order)
+        {
+            return _mapper.Map<OrderDto, Order>(order);
         }
 
         private List<OrderDto> MapEntityToDto(IEnumerable<Order> orders)

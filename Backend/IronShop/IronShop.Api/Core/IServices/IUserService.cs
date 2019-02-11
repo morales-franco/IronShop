@@ -1,4 +1,6 @@
-﻿using IronShop.Api.Core.Entities;
+﻿using IronShop.Api.Core.Dtos.Index;
+using IronShop.Api.Core.Entities;
+using IronShop.Api.Core.Entities.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace IronShop.Api.Core.IServices
     public interface IUserService
     {
         Task<IEnumerable<User>> GetAll();
-        Task<IEnumerable<User>> GetAll(int offset, int limit);
+        Task<PaginableList<User>> GetAll(PageParameters<User> parameters);
         Task<User> GetByEmail(string email);
         Task<User> GetById(int id);
         Task Register(User user);

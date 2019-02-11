@@ -1,15 +1,13 @@
 ﻿using IronShop.Api.Core.Common;
 using IronShop.Api.Core.Entities;
+using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace IronShop.Api.Core.Services
 {

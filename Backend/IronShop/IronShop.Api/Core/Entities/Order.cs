@@ -20,13 +20,20 @@ namespace IronShop.Api.Core.Entities
 
         }
 
-        public Order(int? orderId, DateTime orderDate, long orderNumber, int userId)
+        public Order(int orderId, DateTime orderDate, long orderNumber, int userId)
         {
-            OrderId = orderId??0;
+            OrderId = orderId;
             OrderDate = orderDate;
             OrderNumber = orderNumber;
             UserId = userId;
             Items = new List<OrderItem>();
+        }
+
+        public Order(List<OrderItem> items)
+        {
+            Guard.Against.Null(items, nameof(items));
+
+            Items = items;
         }
 
         public void AddItem(OrderItem item)

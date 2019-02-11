@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace IronShop.Api.Core.Entities.Extensions
+namespace IronShop.Api.Core.Entities.Base
 {
     public class PageParameters<T> 
         where T: class, new()
@@ -13,12 +13,12 @@ namespace IronShop.Api.Core.Entities.Extensions
         public int PageNumber { get; private set; }
         public Expression<Func<T, bool>> Filter { get; private set; }
         public Expression<Func<T, dynamic>> Sort { get; private set; }
-        public string[] Includes { get; private set; }
+        public List<string> Includes { get; private set; }
 
-        public PageParameters(int rowsPerPage, int pageNumber, Expression<Func<T, bool>> filter = null, Expression<Func<T, dynamic>> sort = null, string[] includes = null)
+        public PageParameters(int? rowsPerPage, int? pageNumber, Expression<Func<T, bool>> filter = null, Expression<Func<T, dynamic>> sort = null, List<string> includes = null)
         {
-            RowsPerPage = rowsPerPage;
-            PageNumber = pageNumber;
+            RowsPerPage = rowsPerPage??25;
+            PageNumber = pageNumber??0;
             Filter = filter;
             Sort = sort;
             Includes = includes;

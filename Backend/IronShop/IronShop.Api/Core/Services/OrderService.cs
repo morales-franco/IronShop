@@ -20,13 +20,13 @@ namespace IronShop.Api.Core.Services
             _userService = userService;
         }
 
-        public async Task<Order> Create(OrderDto orderDto)
+        public async Task<Order> Create(Order newOrden)
         {
             var nextOrderNumber = await GetNextOrderNumber();
             var currentUser = await _userService.GetCurrentUser();
-            var order = new Order(orderDto.OrderId, DateTime.Now, nextOrderNumber, currentUser.UserId);
+            var order = new Order(0, DateTime.Now, nextOrderNumber, currentUser.UserId);
 
-            foreach (var item in orderDto.Items)
+            foreach (var item in newOrden.Items)
             {
                 order.AddItem(new OrderItem(item.ProductId, 
                     item.Units, 
@@ -34,9 +34,10 @@ namespace IronShop.Api.Core.Services
             }
 
              _unitOfWork.Orders.Add(order);
-            await _unitOfWork.Commit();
 
+            await _unitOfWork.Commit();
             return order;
+
         }
 
         public async Task<IEnumerable<Order>> GetAll()

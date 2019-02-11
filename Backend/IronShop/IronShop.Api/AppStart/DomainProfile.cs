@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IronShop.Api.Core.Dtos;
+using IronShop.Api.Core.Dtos.Index;
 using IronShop.Api.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,16 @@ namespace IronShop.Api.AppStart
             CreateMap<User, UserDto>()
                 .ReverseMap();
 
-            CreateMap<Product, ProductDto>();
+            CreateMap<User, UserIndexDto>();
 
-            CreateMap<Order, OrderDto>();
+            CreateMap<Product, ProductDto>()
+                .ReverseMap();
 
-            CreateMap<OrderItem, OrderItemDto>();
+            CreateMap<Order, OrderDto>()
+                .ReverseMap();
+
+            CreateMap<OrderItem, OrderItemDto>()
+                .ReverseMap();
         }
     }
 }

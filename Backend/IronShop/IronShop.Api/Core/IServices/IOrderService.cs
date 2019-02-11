@@ -9,7 +9,7 @@ namespace IronShop.Api.Core.IServices
 {
     public interface IOrderService
     {
-        Task<Order> Create(OrderDto orderDto);
+        Task<Order> Create(Order order);
         Task<Order> GetById(int orderId);
         Task<IEnumerable<Order>> GetAll();
     }

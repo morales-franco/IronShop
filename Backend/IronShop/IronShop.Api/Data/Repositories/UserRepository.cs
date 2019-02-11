@@ -1,5 +1,5 @@
 ﻿using IronShop.Api.Core.Entities;
-using IronShop.Api.Core.Entities.Extensions;
+using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,15 +32,23 @@ namespace IronShop.Api.Data.Repositories
         {
             PaginableList<User> dataSource = new PaginableList<User>();
 
-            dataSource.Rows = await _context.User
-                                .Where(pageParameter.Filter)
-                                .OrderBy(pageParameter.Sort)
+            IQueryable<User> query = _context.User;
+
+            if (pageParameter.Filter != null)
+                query = query.Where(pageParameter.Filter);
+
+            if (pageParameter.Includes != null)
+                pageParameter.Includes.ForEach(fk => query = query.Include(fk));
+
+            dataSource.TotalRows = await query.CountAsync();
+
+            if (pageParameter.Sort != null)
+                query = query.OrderBy(pageParameter.Sort);
+
+            dataSource.Rows = await query
                                 .Skip(pageParameter.PageNumber * pageParameter.RowsPerPage)
                                 .Take(pageParameter.RowsPerPage)
                                 .ToListAsync();
-
-
-            dataSource.TotalRows = await _context.User.Where(pageParameter.Filter).CountAsync();
 
             return dataSource;
         }

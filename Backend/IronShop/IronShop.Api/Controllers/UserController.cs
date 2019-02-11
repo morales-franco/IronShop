@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using IronShop.Api.Core;
 using IronShop.Api.Core.Dtos;
+using IronShop.Api.Core.Dtos.Index;
 using IronShop.Api.Core.Entities;
+using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -34,25 +37,55 @@ namespace IronShop.Api.Controllers
         // GET: api/User
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<List<UserDto>>> GetAll(int offset = 0, int limit = 25 )
+        public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAll(int? rowsPerPage, int? pageNumber, string sort = null, string fullName = null, string email = null, string role = null)
         {
+            #region test membesrhip
             var currentUser = HttpContext.User;
 
             var hasUserId = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
-            var hasEmailAddress= currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.Email);
+            var hasEmailAddress = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.Email);
             var hasRole = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.Role);
 
-            var role = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Role);
-            var email = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Email);
+            var roleT = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Role);
+            var emailT = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Email);
             var userId = currentUser.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
 
             var isAdmin = currentUser.IsInRole("ADMIN");
-            
+            #endregion
 
-            var users = await _service.GetAll(offset, limit);
-            var model = MapEntityToDto(users);
-            return model;
+            PaginableList<User> users = await _service.GetAll(GetIndexParameters(rowsPerPage, pageNumber, sort, fullName, email, role));
+
+            return MapEntityToIndex(users);
         }
+
+        private PageParameters<User> GetIndexParameters(int? rowsPerPage, int? pageNumber, string sort, string fullName, string email, string role)
+        {
+            Expression<Func<User, bool>> filter = u => (string.IsNullOrEmpty(fullName) || u.FullName.ToLower().Contains(fullName.ToLower())) &&
+                                                       (string.IsNullOrEmpty(email) || u.Email.ToLower().Contains(email.ToLower())) &&
+                                                       (string.IsNullOrEmpty(role) || u.Email.ToLower().Contains(email.ToLower()));
+
+            Expression<Func<User, dynamic>> orderBy = null;
+
+            switch (sort.ToLower())
+            {
+                case "fullname":
+                    orderBy = u => u.FullName;
+                    break;
+                case "email":
+                    orderBy = u => u.Email;
+                    break;
+                case "role":
+                    orderBy = u => u.Role;
+                    break;
+                default:
+                    break;
+            }
+
+            PageParameters<User> pageParameters = new PageParameters<User>(rowsPerPage, pageNumber, filter, orderBy);
+            return pageParameters;
+        }
+
+
 
         // GET: api/User/GetByEmail/test@test.com.ar
         [HttpGet("GetByEmail/{email}")]
@@ -196,6 +229,13 @@ namespace IronShop.Api.Controllers
             return _mapper.Map<UserDto, User>(user);
         }
 
+        private PaginableList<UserIndexDto> MapEntityToIndex(PaginableList<User> users)
+        {
+            PaginableList<UserIndexDto> dto = new PaginableList<UserIndexDto>();
+            dto.Rows = _mapper.Map<IEnumerable<User>, List<UserIndexDto>>(users.Rows);
+            dto.TotalRows = users.TotalRows;
+            return dto;
+        }
 
 
     }

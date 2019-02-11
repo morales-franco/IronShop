@@ -1,5 +1,5 @@
 ﻿using IronShop.Api.Core.Entities;
-using IronShop.Api.Core.Entities.Extensions;
+using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -31,6 +31,12 @@ namespace IronShop.Api.Core.Services
         public async Task<IEnumerable<User>> GetAll()
         {
             return await _unitOfWork.Users.GetAll();
+        }
+
+        public async Task<PaginableList<User>> GetAll(PageParameters<User> parameters)
+        {
+            return await _unitOfWork.Users.GetPagedList(parameters);
+
         }
 
         public async Task<IEnumerable<User>> GetAll(int offset, int limit)

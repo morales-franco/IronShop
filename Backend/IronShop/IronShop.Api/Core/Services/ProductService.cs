@@ -1,9 +1,8 @@
 ﻿using IronShop.Api.Core.Entities;
-using IronShop.Api.Core.Entities.Extensions;
+using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IronShop.Api.Core.Services

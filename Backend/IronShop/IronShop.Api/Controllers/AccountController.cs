@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IronShop.Api.Core.Dtos;
 using IronShop.Api.Core.Entities;
+using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
