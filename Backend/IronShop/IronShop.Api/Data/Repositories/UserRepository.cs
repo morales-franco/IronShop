@@ -1,4 +1,5 @@
-﻿using IronShop.Api.Core.Entities;
+﻿using IronShop.Api.Core.Common;
+using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,7 @@ namespace IronShop.Api.Data.Repositories
             dataSource.TotalRows = await query.CountAsync();
 
             if (pageParameter.Sort != null)
-                query = query.OrderBy(pageParameter.Sort);
+                query = pageParameter.Direction == GridDirection.Asc ? query.OrderBy(pageParameter.Sort) : query.OrderByDescending(pageParameter.Sort);
 
             dataSource.Rows = await query
                                 .Skip(pageParameter.PageNumber * pageParameter.RowsPerPage)

@@ -37,7 +37,7 @@ namespace IronShop.Api.Controllers
         // GET: api/User
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAll(int? rowsPerPage, int? pageNumber, string sort = null, string fullName = null, string email = null, string role = null)
+        public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAll(int? rowsPerPage, int? pageNumber, string sort = null, string dir = null, string fullName = null, string email = null, string role = null)
         {
             #region test membesrhip
             var currentUser = HttpContext.User;
@@ -53,12 +53,12 @@ namespace IronShop.Api.Controllers
             var isAdmin = currentUser.IsInRole("ADMIN");
             #endregion
 
-            PaginableList<User> users = await _service.GetAll(GetIndexParameters(rowsPerPage, pageNumber, sort, fullName, email, role));
+            PaginableList<User> users = await _service.GetAll(GetIndexParameters(rowsPerPage, pageNumber, sort, dir,fullName, email, role));
 
             return MapEntityToIndex(users);
         }
 
-        private PageParameters<User> GetIndexParameters(int? rowsPerPage, int? pageNumber, string sort, string fullName, string email, string role)
+        private PageParameters<User> GetIndexParameters(int? rowsPerPage, int? pageNumber, string sort, string dir,string fullName, string email, string role)
         {
             Expression<Func<User, bool>> filter = u => (string.IsNullOrEmpty(fullName) || u.FullName.ToLower().Contains(fullName.ToLower())) &&
                                                        (string.IsNullOrEmpty(email) || u.Email.ToLower().Contains(email.ToLower())) &&
@@ -81,7 +81,7 @@ namespace IronShop.Api.Controllers
                     break;
             }
 
-            PageParameters<User> pageParameters = new PageParameters<User>(rowsPerPage, pageNumber, filter, orderBy);
+            PageParameters<User> pageParameters = new PageParameters<User>(rowsPerPage, pageNumber, filter, orderBy, dir);
             return pageParameters;
         }
 
