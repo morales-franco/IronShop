@@ -39,13 +39,11 @@ namespace IronShop.Api.Core.Services
 
         }
 
-        public async Task<IEnumerable<User>> GetAll(int offset, int limit)
+        public virtual async Task<IList<T>> GetList<T>(string storedProcedure, params KeyValuePair<string, object>[] parameters) where T : class, new()
         {
-            PageParameters<User> parameter = new PageParameters<User>(5, 0, u => u.FullName.ToLower().Contains("test"), u => u.Email, null);
-            var test = await _unitOfWork.Users.GetPagedList(parameter);
-
-            return await GetAll();
+            return await _unitOfWork.Users.GetList<T>(storedProcedure, parameters);
         }
+
 
         public async Task<User> GetByEmail(string email)
         {

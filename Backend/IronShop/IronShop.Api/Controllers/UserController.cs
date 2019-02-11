@@ -34,31 +34,84 @@ namespace IronShop.Api.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/User
+        //TODO: Get all 
+        // GET: api/User/GetAll
         [HttpGet]
+        [HttpGet("GetAll")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAll(int? rowsPerPage, int? pageNumber, string sort = null, string dir = null, string fullName = null, string email = null, string role = null)
+        public async Task<ActionResult<List<UserIndexDto>>> GetAll()
         {
-            #region test membesrhip
-            var currentUser = HttpContext.User;
-
-            var hasUserId = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
-            var hasEmailAddress = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.Email);
-            var hasRole = currentUser.HasClaim(c => c.Type == System.Security.Claims.ClaimTypes.Role);
-
-            var roleT = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Role);
-            var emailT = currentUser.FindFirst(System.Security.Claims.ClaimTypes.Email);
-            var userId = currentUser.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-
-            var isAdmin = currentUser.IsInRole("ADMIN");
-            #endregion
-
-            PaginableList<User> users = await _service.GetAll(GetIndexParameters(rowsPerPage, pageNumber, sort, dir,fullName, email, role));
-
+            var users = await _service.GetAll();
             return MapEntityToIndex(users);
         }
 
-        private PageParameters<User> GetIndexParameters(int? rowsPerPage, int? pageNumber, string sort, string dir,string fullName, string email, string role)
+        //TODO: Get all 
+        // GET: api/User/GetAllSP
+        [HttpGet]
+        [HttpGet("GetAllSP")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<List<UserIndexDto>>> GetAllSP()
+        {
+            var procedureName = "Index" + typeof(User).Name;
+            var rows = await _service.GetList<UserIndexDto>(procedureName, ParseIndexQueryString(Request.Query));
+            return rows.ToList();
+        }
+
+        //TODO: Get all Paging with E.F pure (using expression's)
+        // GET: api/User/GetAllPaged
+        [HttpGet("GetAllPaged")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAllPaged(int? pageSize, int? pageNumber, string sort = null, string dir = null, string fullName = null, string email = null, string role = null)
+        {
+            PaginableList<User> users = await _service.GetAll(GetIndexParameters(pageSize, pageNumber, sort, dir,fullName, email, role));
+            return MapEntityToIndex(users);
+        }
+
+        //TODO: Get all Paging with SP
+        // GET: api/User/GetAllPagedSP
+        [HttpGet("GetAllPagedSP")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAllPagedSP()
+        {
+            var procedureName = "IndexPaged" + typeof(User).Name;
+            var rows = await _service.GetList<UserIndexDto>(procedureName, ParseIndexQueryString(Request.Query));
+
+            PaginableList<UserIndexDto> paginableList = new PaginableList<UserIndexDto>();
+            paginableList.Rows = rows.ToList();
+            paginableList.TotalRows = rows.Any() ? rows.FirstOrDefault().TotalRows : 0;
+            return paginableList;
+        }
+
+        public virtual KeyValuePair<string, object>[] ParseIndexQueryString(IQueryCollection queryString)
+        {
+            List<KeyValuePair<string, object>> values = new List<KeyValuePair<string, object>>();
+            List<string> ignoredKeys = new List<string>() { "Length", "X-Requested-With", "_", "page", "__swhg", "sort", "sortdir" };
+
+            foreach (var key in queryString.Keys)
+            {
+                if (!string.IsNullOrEmpty(key) &&
+                    !string.IsNullOrEmpty(queryString[key]) &&
+                    !ignoredKeys.Contains(key))
+                {
+                    //Parseo de valores boolean
+                    switch (queryString[key])
+                    {
+                        case "true":
+                            values.Add(new KeyValuePair<string, object>(key, true));
+                            break;
+                        case "false":
+                            values.Add(new KeyValuePair<string, object>(key, false));
+                            break;
+                        default:
+                            values.Add(new KeyValuePair<string, object>(key, queryString[key]));
+                            break;
+                    }
+                }
+            }
+            return values.ToArray();
+        }
+
+        private PageParameters<User> GetIndexParameters(int? pageSize, int? pageNumber, string sort, string dir,string fullName, string email, string role)
         {
             Expression<Func<User, bool>> filter = u => (string.IsNullOrEmpty(fullName) || u.FullName.ToLower().Contains(fullName.ToLower())) &&
                                                        (string.IsNullOrEmpty(email) || u.Email.ToLower().Contains(email.ToLower())) &&
@@ -81,7 +134,7 @@ namespace IronShop.Api.Controllers
                     break;
             }
 
-            PageParameters<User> pageParameters = new PageParameters<User>(rowsPerPage, pageNumber, filter, orderBy, dir);
+            PageParameters<User> pageParameters = new PageParameters<User>(pageSize, pageNumber, filter, orderBy, dir);
             return pageParameters;
         }
 
@@ -227,6 +280,11 @@ namespace IronShop.Api.Controllers
         private User MapDtoToEntity(UserDto user)
         {
             return _mapper.Map<UserDto, User>(user);
+        }
+
+        private List<UserIndexDto> MapEntityToIndex(IEnumerable<User> users)
+        {
+            return _mapper.Map<IEnumerable<User>, List<UserIndexDto>>(users);
         }
 
         private PaginableList<UserIndexDto> MapEntityToIndex(PaginableList<User> users)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using IronShop.Api.Core;
 using IronShop.Api.Core.IServices;
 using IronShop.Api.Core.Services;
@@ -15,9 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace IronShop.Api
 {
@@ -30,7 +24,7 @@ namespace IronShop.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the container., IHostingEnvironment env
         public void ConfigureServices(IServiceCollection services)
         {
             //enable cors
@@ -74,7 +68,7 @@ namespace IronShop.Api
 
             //Enable access Http Context out controller (in our case UserService)
             services.AddHttpContextAccessor();
-
+            //services.AddSingleton<IHostingEnvironment>(env);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();

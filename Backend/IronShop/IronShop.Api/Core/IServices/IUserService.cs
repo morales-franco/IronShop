@@ -12,6 +12,7 @@ namespace IronShop.Api.Core.IServices
     {
         Task<IEnumerable<User>> GetAll();
         Task<PaginableList<User>> GetAll(PageParameters<User> parameters);
+        Task<IList<T>> GetList<T>(string storedProcedure, params KeyValuePair<string, object>[] parameters) where T : class, new();
         Task<User> GetByEmail(string email);
         Task<User> GetById(int id);
         Task Register(User user);
