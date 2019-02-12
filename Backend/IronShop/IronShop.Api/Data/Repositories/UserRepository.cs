@@ -71,42 +71,8 @@ namespace IronShop.Api.Data.Repositories
             var adoConnection = _context.Database.GetDbConnection().ConnectionString;
             var sqlConnection = new SqlConnection(adoConnection);
 
-            var result = await SqlMapper.QueryAsync<T>(sqlConnection, "IndexUser", dynamicParameters, commandType: CommandType.StoredProcedure);
+            var result = await SqlMapper.QueryAsync<T>(sqlConnection, storedProcedure, dynamicParameters, commandType: CommandType.StoredProcedure);
             return result.ToList();
-        }
-
-        string ParametersToString(DynamicParameters parameters)
-        {
-            var result = new StringBuilder();
-
-            if (parameters != null)
-            {
-                var firstParam = true;
-                var parametersLookup = (SqlMapper.IParameterLookup)parameters;
-                foreach (var paramName in parameters.ParameterNames)
-                {
-                    if (!firstParam)
-                    {
-                        result.Append(", ");
-                    }
-                    firstParam = false;
-
-                    result.Append('@');
-                    result.Append(paramName);
-                    result.Append(" = ");
-                    try
-                    {
-                        var value = parametersLookup[paramName];// parameters.Get<dynamic>(paramName);
-                        result.Append((value != null) ? value.ToString() : "{null}");
-                    }
-                    catch
-                    {
-                        result.Append("unknown");
-                    }
-                }
-
-            }
-            return result.ToString();
         }
 
         public async Task<User> GetByEmail(string email)
