@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using AutoMapper;
-using IronShop.Api.Core;
+﻿using AutoMapper;
 using IronShop.Api.Core.Dtos;
 using IronShop.Api.Core.Dtos.Index;
 using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace IronShop.Api.Controllers
 {
@@ -26,6 +25,7 @@ namespace IronShop.Api.Controllers
     {
         private readonly IUserService _service;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger = Log.ForContext<UserController>();
 
         public UserController(IUserService service,
             IMapper mapper)
@@ -41,6 +41,16 @@ namespace IronShop.Api.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<UserIndexDto>>> GetAll()
         {
+            try
+            {
+                _logger.Debug("Get All!");
+                throw new Exception("Great Error!");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Fake Error Get All");
+            }
+
             var users = await _service.GetAll();
             return MapEntityToIndex(users);
         }
@@ -103,7 +113,7 @@ namespace IronShop.Api.Controllers
                         case "false":
                             values.Add(new KeyValuePair<string, object>(key, false));
                             break;
-                        default: 
+                        default:
                             DateTime aux = DateTime.Now;
                             if (DateTime.TryParse(queryString[key].ToString(), out aux))
                                 values.Add(new KeyValuePair<string, object>(key, aux));
