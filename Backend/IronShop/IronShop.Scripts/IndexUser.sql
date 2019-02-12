@@ -6,12 +6,12 @@ END
 
 GO
 
-CREATE PROCEDURE IndexPagedUser
+CREATE PROCEDURE [dbo].[IndexPagedUser]
 (
 	@pageNumber INT = 1,
 	@pageSize INT = 25,
-	@sort VARCHAR(100) =NULL,
-	@dir VARCHAR(4) = NULL,
+	@sort VARCHAR(100) = 'FullName',
+	@dir VARCHAR(4) = 'ASC',
 	@fullName VARCHAR(512) = NULL,
 	@email VARCHAR(256) = NULL,
 	@role VARCHAR(50) = NULL
@@ -43,8 +43,9 @@ BEGIN
 
 	IF(NOT @sort IS NULL)
 	BEGIN
-		SET @orderBy = ' ORDER BY ' + @sort + ' ' + ISNULL(@dir, 'ASC');
+		SET @orderBy =  @sort + ' ' + ISNULL(@dir, 'ASC');
 	END
+
 
 
 	SET @sql = 'WITH DataRows
@@ -60,17 +61,16 @@ BEGIN
 					SELECT COUNT([UserId]) AS TotalRows FROM DataRows
 				)
 				SELECT [UserId], FullName, Email, [Role], [TotalRows]
-				FROM [DataRows] CROSS JOIN DataTotalCount '
-				+ 
-				@orderBy
-				+
-				' OFFSET ('+ CONVERT(VARCHAR,@pageNumber)  +' - 1) * ' +CONVERT(VARCHAR, @pageSize) +' ROWS
+				FROM [DataRows] CROSS JOIN DataTotalCount 
+				ORDER BY ' + @orderBy +
+			  ' OFFSET ('+ CONVERT(VARCHAR,@pageNumber)  +' - 1) * ' +CONVERT(VARCHAR, @pageSize) +' ROWS
 				FETCH NEXT ' + CONVERT(VARCHAR,@pageSize) + ' ROWS ONLY;'
 
 
 	EXEC(@sql)
 
 END
+
 
 GO
 
