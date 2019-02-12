@@ -60,48 +60,19 @@ namespace IronShop.Api.Data.Repositories
             return dataSource;
         }
 
-        public virtual async Task<IList<T>> GetList<T>(string storedProcedure, params KeyValuePair<string, object>[] parameters) where T : class, new()
+        public virtual async Task<IList<T>> GetList<T>(string storedProcedure, KeyValuePair<string, object>[] parameters) where T : class, new()
         {
-            string paramzz = string.Empty;
             DynamicParameters dynamicParameters = new DynamicParameters();
-            //object p1 = "iron";
-            //object p2 = "test";
-            //object p3 = "admin";
-            //dParameters.Add("@fullName", p1);
-            //dParameters.Add("@email", p2);
-            //dParameters.Add("@role", p3);
-            Dictionary<string, object> paa = new Dictionary<string, object>();
-            //paa.Add("fullName", "iron");
 
             if (parameters != null)
-            {
-                var key = parameters[0].Key;
-                var value = parameters[0].Value;
-
                 for (int idx = 0; idx < parameters.Length; idx++)
-                {
                     dynamicParameters.Add(parameters[idx].Key, parameters[idx].Value);
-                }
-                paa.Add(key, value.ToString());
-
-            }
 
             var adoConnection = _context.Database.GetDbConnection().ConnectionString;
             var sqlConnection = new SqlConnection(adoConnection);
 
-            try
-            {
-
-                //var result = await SqlMapper.QueryAsync<T>(sqlConnection, storedProcedure, dParameters, commandType: CommandType.StoredProcedure);
-                var result = await SqlMapper.QueryAsync<T>(sqlConnection, "IndexUser", paa, commandType: CommandType.StoredProcedure);
-                return result.ToList();
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-            
+            var result = await SqlMapper.QueryAsync<T>(sqlConnection, "IndexUser", dynamicParameters, commandType: CommandType.StoredProcedure);
+            return result.ToList();
         }
 
         string ParametersToString(DynamicParameters parameters)

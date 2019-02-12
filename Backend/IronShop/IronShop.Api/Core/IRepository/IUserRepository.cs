@@ -9,7 +9,7 @@ namespace IronShop.Api.Core.IRepository
     {
         Task<IEnumerable<User>> GetAll();
         Task<PaginableList<User>> GetPagedList(PageParameters<User> pageParameter);
-        Task<IList<T>> GetList<T>(string storedProcedure, params KeyValuePair<string, object>[] parameters) where T : class, new();
+        Task<IList<T>> GetList<T>(string storedProcedure, KeyValuePair<string, object>[] parameters) where T : class, new();
         Task<User> GetByEmail(string email);
         Task<User> GetById(int id);
         void Add(User user);

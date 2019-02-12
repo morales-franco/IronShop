@@ -39,7 +39,7 @@ namespace IronShop.Api.Core.Services
 
         }
 
-        public virtual async Task<IList<T>> GetList<T>(string storedProcedure, params KeyValuePair<string, object>[] parameters) where T : class, new()
+        public virtual async Task<IList<T>> GetList<T>(string storedProcedure, KeyValuePair<string, object>[] parameters) where T : class, new()
         {
             return await _unitOfWork.Users.GetList<T>(storedProcedure, parameters);
         }

@@ -63,7 +63,7 @@ namespace IronShop.Api.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAllPaged(int? pageSize, int? pageNumber, string sort = null, string dir = null, string fullName = null, string email = null, string role = null)
         {
-            PaginableList<User> users = await _service.GetAll(GetIndexParameters(pageSize, pageNumber, sort, dir,fullName, email, role));
+            PaginableList<User> users = await _service.GetAll(GetIndexParameters(pageSize, pageNumber, sort, dir, fullName, email, role));
             return MapEntityToIndex(users);
         }
 
@@ -89,11 +89,12 @@ namespace IronShop.Api.Controllers
 
             foreach (var key in queryString.Keys)
             {
+
                 if (!string.IsNullOrEmpty(key) &&
                     !string.IsNullOrEmpty(queryString[key]) &&
                     !ignoredKeys.Contains(key))
                 {
-                    //Parseo de valores boolean
+                    //Parseo de valores boolean & datetimes
                     switch (queryString[key])
                     {
                         case "true":
@@ -102,8 +103,12 @@ namespace IronShop.Api.Controllers
                         case "false":
                             values.Add(new KeyValuePair<string, object>(key, false));
                             break;
-                        default:
-                            values.Add(new KeyValuePair<string, object>(key, queryString[key]));
+                        default: 
+                            DateTime aux = DateTime.Now;
+                            if (DateTime.TryParse(queryString[key].ToString(), out aux))
+                                values.Add(new KeyValuePair<string, object>(key, aux));
+                            else
+                                values.Add(new KeyValuePair<string, object>(key, queryString[key].ToString()));
                             break;
                     }
                 }
@@ -111,7 +116,7 @@ namespace IronShop.Api.Controllers
             return values.ToArray();
         }
 
-        private PageParameters<User> GetIndexParameters(int? pageSize, int? pageNumber, string sort, string dir,string fullName, string email, string role)
+        private PageParameters<User> GetIndexParameters(int? pageSize, int? pageNumber, string sort, string dir, string fullName, string email, string role)
         {
             Expression<Func<User, bool>> filter = u => (string.IsNullOrEmpty(fullName) || u.FullName.ToLower().Contains(fullName.ToLower())) &&
                                                        (string.IsNullOrEmpty(email) || u.Email.ToLower().Contains(email.ToLower())) &&
