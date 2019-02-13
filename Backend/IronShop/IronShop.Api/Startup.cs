@@ -3,6 +3,7 @@ using IronShop.Api.Core;
 using IronShop.Api.Core.IServices;
 using IronShop.Api.Core.Services;
 using IronShop.Api.Data;
+using IronShop.Api.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -79,10 +80,13 @@ namespace IronShop.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //Custom middleware por exceptions
+            app.UseIronExceptionHandler();
+
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
             //Habilitamos Auth --> Before MVC!
             app.UseAuthentication();
 

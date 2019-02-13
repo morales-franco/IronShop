@@ -208,7 +208,7 @@ namespace IronShop.Api.Controllers
             catch (Exception ex)
             {
                 //TODO: Change for return 500 code not only 400
-                HandleException(ex);
+                 HandleException(ex);
             }
 
             return BadRequest(ModelState);
@@ -217,15 +217,11 @@ namespace IronShop.Api.Controllers
         private void HandleException(Exception ex)
         {
             if (ex is ValidationException)
-            {
                 ModelState.AddModelError("", ex.Message);
-            }
             else
-            {
-                //Utils.Services.Logger.Error(ex);
-                ModelState.AddModelError("", "Se ha producido un error interno por favor consulte al administrador");
-            }
+                throw ex; //Delegate error 500 at Middleware
         }
+
 
         // PUT: api/User/1
         [HttpPut("{id}")]

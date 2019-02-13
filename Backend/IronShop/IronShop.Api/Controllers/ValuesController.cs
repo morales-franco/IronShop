@@ -14,6 +14,12 @@ namespace IronShop.Api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            var a = 1;
+            var b = 0;
+
+            var c = (a * a) / (a * b);
+            //throw new Exception("Great Error!");
+
             return new string[] { "value1", "value2" };
         }
 
@@ -25,7 +31,7 @@ namespace IronShop.Api.Controllers
         }
 
         // POST api/values
-        [HttpPost]
+        [HttpPost]  
         public void Post([FromBody] string value)
         {
         }
