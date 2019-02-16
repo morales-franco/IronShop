@@ -52,19 +52,14 @@ namespace IronShop.Api.Controllers
             return BadRequest(ModelState);
         }
 
-       
+
 
         private void HandleException(Exception ex)
         {
             if (ex is ValidationException)
-            {
                 ModelState.AddModelError("", ex.Message);
-            }
             else
-            {
-                //Utils.Services.Logger.Error(ex);
-                ModelState.AddModelError("", "Se ha producido un error interno por favor consulte al administrador");
-            }
+                throw ex; //Delegate error 500 at Middleware
         }
     }
 }

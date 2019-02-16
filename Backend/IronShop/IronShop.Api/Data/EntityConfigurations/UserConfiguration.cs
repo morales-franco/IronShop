@@ -42,6 +42,10 @@ namespace IronShop.Api.Data.EntityConfigurations
                 .Property(u => u.Password)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            builder
+                .Property(u => u.ImageFileName)
+                .HasMaxLength(256);
         }
     }
 }

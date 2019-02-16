@@ -120,5 +120,14 @@ namespace IronShop.Api.Core.Services
             return user;
 
         }
+
+        public async Task UploadImage(int id, string image)
+        {
+            var userBd = await _unitOfWork.Users.GetById(id);
+            userBd.SetImage(image);
+
+            _unitOfWork.Users.Update(userBd);
+            await _unitOfWork.Commit();
+        }
     }
 }

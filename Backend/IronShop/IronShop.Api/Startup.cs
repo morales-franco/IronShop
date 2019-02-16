@@ -83,10 +83,10 @@ namespace IronShop.Api
             //Custom middleware por exceptions
             app.UseIronExceptionHandler();
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             //Habilitamos Auth --> Before MVC!
             app.UseAuthentication();
 

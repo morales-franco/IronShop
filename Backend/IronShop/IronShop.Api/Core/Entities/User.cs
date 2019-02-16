@@ -20,6 +20,8 @@ namespace IronShop.Api.Core.Entities
 
         public string Role { get; private set; }
 
+        public string ImageFileName { get; private set; }
+
         public User()
         {
 
@@ -99,6 +101,11 @@ namespace IronShop.Api.Core.Entities
         internal bool IsMyPassword(string password)
         {
             return Password == HashHelper.Create(password);
+        }
+
+        internal void SetImage(string image)
+        {
+            ImageFileName = image;
         }
     }
 }

@@ -21,5 +21,6 @@ namespace IronShop.Api.Core.IServices
         Task ChangePassword(User user);
         Task<User> Login(User user);
         Task<User> GetCurrentUser();
+        Task UploadImage(int id, string image);
     }
 }
