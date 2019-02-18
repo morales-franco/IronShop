@@ -69,7 +69,7 @@ namespace IronShop.Api
 
             //Enable access Http Context out controller (in our case UserService)
             services.AddHttpContextAccessor();
-            //services.AddSingleton<IHostingEnvironment>(env);
+            services.AddSingleton<IFileService, FileService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();

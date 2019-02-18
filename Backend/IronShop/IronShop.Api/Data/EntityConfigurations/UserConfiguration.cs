@@ -46,6 +46,11 @@ namespace IronShop.Api.Data.EntityConfigurations
             builder
                 .Property(u => u.ImageFileName)
                 .HasMaxLength(256);
+
+            builder
+                .Property(u => u.GoogleAuth)
+                .IsRequired()
+                .HasDefaultValue(false);
         }
     }
 }

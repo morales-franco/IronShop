@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using IronShop.Api.Core.Common;
 using IronShop.Api.Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -22,23 +23,25 @@ namespace IronShop.Api.Core.Entities
 
         public string ImageFileName { get; private set; }
 
+        public bool GoogleAuth { get; private set; }
+
         public User()
         {
 
         }
 
         //Automapper call this method
-        public User(string fullName, string email, string password, string role)
+        public User(string fullName, string email, string password, string role = null, bool googleUser = false)
         {
             Guard.Against.NullOrEmpty(fullName, nameof(fullName));
             Guard.Against.NullOrEmpty(email, nameof(email));
             Guard.Against.NullOrEmpty(password, nameof(password));
-            Guard.Against.NullOrEmpty(role, nameof(role));
 
             FullName = fullName;
             Email = email;
             Password = password;
-            Role = role;
+            Role = role?? AuthConstants.Role_User;
+            GoogleAuth = googleUser;
         }
 
         public User(int userId, string fullName, string email, string role)
@@ -103,9 +106,14 @@ namespace IronShop.Api.Core.Entities
             return Password == HashHelper.Create(password);
         }
 
-        internal void SetImage(string image)
+        internal void SetProfilePicture(string fileName)
         {
-            ImageFileName = image;
+            ImageFileName = fileName;
+        }
+
+        internal  bool IsGoogleUser()
+        {
+            return GoogleAuth;
         }
     }
 }

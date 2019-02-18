@@ -1,7 +1,10 @@
-﻿using IronShop.Api.Core.Entities;
+﻿using Google.Apis.Auth;
+using IronShop.Api.Core.Common;
+using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,12 +17,21 @@ namespace IronShop.Api.Core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IConfiguration _configuration;
+        private readonly ITokenService _tokenService;
+        private readonly IFileService _fileService;
 
         public UserService(IUnitOfWork unitOfWork,
-                           IHttpContextAccessor context)
+                           IHttpContextAccessor context,
+                           IConfiguration configuration,
+                           ITokenService tokenService,
+                           IFileService fileService)
         {
             _unitOfWork = unitOfWork;
             _httpContext = context;
+            _configuration = configuration;
+            _tokenService = tokenService;
+            _fileService = fileService;
         }
 
         public async Task Delete(User user)
@@ -98,17 +110,50 @@ namespace IronShop.Api.Core.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<User> Login(User user)
+        public async Task<IronToken> Login(User user)
         {
             var userBd = await _unitOfWork.Users.GetByEmail(user.Email);
 
             if (userBd == null)
                 throw new ValidationException("Invalid Credentials");
 
-            if(!userBd.IsMyPassword(user.Password))
+            if (userBd.IsGoogleUser())
+                throw new ValidationException("User was created with Auth Google. Use google login");
+
+            if (!userBd.IsMyPassword(user.Password))
                 throw new ValidationException("Invalid Credentials");
 
-            return userBd;
+
+            return _tokenService.Generate(userBd);
+        }
+
+        public async Task<IronToken> Login(UserGoogle user)
+        {
+            var googlePublicKey = _configuration["Google:PublicKey"];
+            var userValidPayload = await GoogleJsonWebSignature.ValidateAsync(user.TokenGoogle, new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new string[] { googlePublicKey }
+            });
+
+            var userBd = await _unitOfWork.Users.GetByEmail(user.Email);
+
+            if(userBd != null)
+            {
+                if(!userBd.GoogleAuth)
+                    throw new ValidationException($"User { user.Email } was created with default authentication. Use email and Password");
+            }
+            else
+            {
+                var profilePicture = await _fileService.DownloadAndSaveFromUrl(userValidPayload.Picture);
+                userBd = new User(userValidPayload.Name, userValidPayload.Email, AuthConstants.UserGoogle_FakePassword, AuthConstants.Role_User, true);
+
+                if (profilePicture.Success)
+                    userBd.SetProfilePicture(profilePicture.FileName);
+
+                await Register(userBd);
+            }
+
+            return _tokenService.Generate(userBd);
         }
 
         public async Task<User> GetCurrentUser()
@@ -121,10 +166,18 @@ namespace IronShop.Api.Core.Services
 
         }
 
-        public async Task UploadImage(int id, string image)
+        public async Task UploadImage(int id, IFormFile file)
         {
             var userBd = await _unitOfWork.Users.GetById(id);
-            userBd.SetImage(image);
+            var image = await  _fileService.DownloadAndSaveFromForm(file);
+
+            if (!image.Success)
+                throw new ValidationException("Error when try to update Profile Picture");
+
+            if(userBd.ImageFileName != null)
+                 _fileService.DeleteFile(userBd.ImageFileName);
+
+            userBd.SetProfilePicture(image.FileName);
 
             _unitOfWork.Users.Update(userBd);
             await _unitOfWork.Commit();

@@ -1,6 +1,7 @@
 ﻿using IronShop.Api.Core.Dtos.Index;
 using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.Entities.Base;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,9 @@ namespace IronShop.Api.Core.IServices
         Task Update(User user);
         Task Delete(User user);
         Task ChangePassword(User user);
-        Task<User> Login(User user);
+        Task<IronToken> Login(User user);
+        Task<IronToken> Login(UserGoogle user);
         Task<User> GetCurrentUser();
-        Task UploadImage(int id, string image);
+        Task UploadImage(int id, IFormFile image);
     }
 }

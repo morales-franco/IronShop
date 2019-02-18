@@ -317,19 +317,19 @@ namespace IronShop.Api.Controllers
         }
 
 
-        // PUT: api/User/Upload
-        [HttpPut("Upload/{id}")]
+        // PUT: api/User/UploadProfilePicture
+        [HttpPut("UploadProfilePicture/{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Upload(int id)
+        public async Task<IActionResult> UploadProfilePicture(int id)
         {
             if (!Request.Form.Files.Any())
                 return BadRequest("Image is required");
 
             var validExtensions = new string[] { ".png", ".jpg", ".gif", ".jpeg" };
 
-            var image = Request.Form.Files.FirstOrDefault();
-            var imageExtension = Path.GetExtension(image.FileName);
+            var imageFile = Request.Form.Files.FirstOrDefault();
+            var imageExtension = Path.GetExtension(imageFile.FileName);
 
             if (!validExtensions.Any(e => e == imageExtension.ToLower()))
                 return BadRequest($"Format Image Not valid - valid Formats: { string.Join(",", validExtensions) }");
@@ -338,73 +338,8 @@ namespace IronShop.Api.Controllers
             if (user == null)
                 return NotFound();
 
-            var pathRelativeImageStorage = _configuration["Storage:ImageFolder"];
-
-            var newImage = Guid.NewGuid().ToString() + imageExtension;
-
-            var pathAbsolute = Path.Combine(_hostingEnvironment.WebRootPath, pathRelativeImageStorage, newImage);
-            byte[] arrayFile;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await image.CopyToAsync(memoryStream);
-                arrayFile = memoryStream.ToArray();
-            }
-
-            using (FileStream fs = System.IO.File.Create(pathAbsolute))
-            {
-                await fs.WriteAsync(arrayFile, 0, arrayFile.Length);
-            }
-
-            if (user.ImageFileName != null)
-            {
-                var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, pathRelativeImageStorage, user.ImageFileName);
-
-                if (System.IO.File.Exists(oldImagePath))
-                {
-                    System.IO.File.Delete(oldImagePath);
-                }
-            }
-
-            await _service.UploadImage(id, newImage);
-
+            await _service.UploadImage(id, imageFile);
             return NoContent();
-        }
-
-        // GET: api/user/photo
-        [HttpGet("photo/{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult> Photo(int id)
-        {
-            var user = await _service.GetById(id);
-            if (user == null)
-                return NotFound();
-
-            var pathRelativeImageStorage = _configuration["Storage:ImageFolder"];
-            var pathPickEmpty = "assets/images/no-img.jpg";
-            var pathImage = Path.Combine(_hostingEnvironment.WebRootPath, pathRelativeImageStorage, pathPickEmpty);
-
-            if (user.ImageFileName != null)
-                pathImage = Path.Combine(_hostingEnvironment.WebRootPath, pathRelativeImageStorage, user.ImageFileName);
-
-            byte[] result;
-            using (MemoryStream imageStream = new MemoryStream())
-            {
-                using (FileStream file = new FileStream(pathImage, FileMode.Open, FileAccess.Read))
-                    file.CopyTo(imageStream);
-                result = imageStream.ToArray();
-            }
-
-            var provider = new FileExtensionContentTypeProvider();
-            string contentType;
-            if (!provider.TryGetContentType(user.ImageFileName, out contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-
-            return File(result, contentType);
-
         }
 
     }
