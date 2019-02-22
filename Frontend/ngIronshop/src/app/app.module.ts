@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Modules
 import { AppComponent } from './app.component';
@@ -38,7 +38,8 @@ AppRoutingModule: Siempre tiene que ir al final de las demas hojas de routeo
     PageModule,
     AppRoutingModule,
     ServiceModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
