@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  WEBAPI_ENDPOINT: "http://localhost:5362/api/public"
 };
