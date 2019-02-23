@@ -7,12 +7,10 @@ namespace IronShop.Api.Core.Entities
 {
     public class UserGoogle
     {
-        public string Email { get; private set; }
         public string TokenGoogle { get; private set; }
 
-        public UserGoogle(string email, string tokenGoogle)
+        public UserGoogle(string tokenGoogle)
         {
-            Email = email;
             TokenGoogle = tokenGoogle;
         }
     }

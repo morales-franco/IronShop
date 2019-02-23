@@ -8,8 +8,6 @@ namespace IronShop.Api.Core.Dtos
 {
     public class LoginGoogleDto
     {
-        [Required, MaxLength(256), EmailAddress]
-        public string Email { get; set; }
         [Required]
         public string TokenGoogle { get; set; }
     }

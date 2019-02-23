@@ -135,12 +135,12 @@ namespace IronShop.Api.Core.Services
                 Audience = new string[] { googlePublicKey }
             });
 
-            var userBd = await _unitOfWork.Users.GetByEmail(user.Email);
+            var userBd = await _unitOfWork.Users.GetByEmail(userValidPayload.Email);
 
             if(userBd != null)
             {
                 if(!userBd.GoogleAuth)
-                    throw new ValidationException($"User { user.Email } was created with default authentication. Use email and Password");
+                    throw new ValidationException($"User { userValidPayload.Email } was created with default authentication. Use email and Password");
             }
             else
             {

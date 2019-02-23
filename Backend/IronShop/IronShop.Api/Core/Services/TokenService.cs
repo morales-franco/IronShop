@@ -1,4 +1,6 @@
-﻿using IronShop.Api.Core.Common;
+﻿using AutoMapper;
+using IronShop.Api.Core.Common;
+using IronShop.Api.Core.Dtos;
 using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
@@ -14,10 +16,13 @@ namespace IronShop.Api.Core.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration,
+                            IMapper mapper)
         {
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         public IronToken Generate(User user)
@@ -53,7 +58,12 @@ namespace IronShop.Api.Core.Services
                 signingCredentials: credentials
                 );
 
-            return new IronToken(new JwtSecurityTokenHandler().WriteToken(token), token.ValidTo);
+            return new IronToken(new JwtSecurityTokenHandler().WriteToken(token), token.ValidTo, MapUserToProfile(user));
+        }
+
+        private ProfileDto MapUserToProfile(User user)
+        {
+            return _mapper.Map<ProfileDto>(user);
         }
     }
 }

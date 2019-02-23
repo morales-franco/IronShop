@@ -4,6 +4,7 @@ import { ValidatorReactive } from "../../commons/validators/validators.reactive"
 import swal from "sweetalert";
 import { UserService } from "../../services/user/user.service";
 import { Register } from "../../models/register.model";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-register",
@@ -13,7 +14,8 @@ import { Register } from "../../models/register.model";
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
 
-  constructor(public userService: UserService) {}
+  constructor(public userService: UserService,
+    private _router: Router) {}
 
   /*@FM:Validation at Form Level! Not a Field Level
    ValidatorReactive.areEquals is a special Form Level validation  
@@ -49,9 +51,8 @@ export class RegisterComponent implements OnInit {
 
     this.userService.register(registerUser)
         .subscribe(u => {
-          console.log(u);
+          swal("Success", `User: ${ registerUser.email } has been created successfully`, "success");
+          this._router.navigate(['/login']);
         });
-
-    console.log(this.registerForm.value);
   }
 }

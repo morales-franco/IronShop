@@ -198,31 +198,6 @@ namespace IronShop.Api.Controllers
             return model;
         }
 
-        //POST: api/Register
-        [HttpPost("Register")]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<UserDto>> Register(RegisterUserDto user)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
-                var userEntity = new User(user.FullName, user.Email, user.Password, user.Role);
-                await _service.Register(userEntity);
-
-                return CreatedAtAction(nameof(GetById),
-                    new { id = userEntity.UserId }, userEntity);
-            }
-            catch (Exception ex)
-            {
-                //TODO: Change for return 500 code not only 400
-                HandleException(ex);
-            }
-
-            return BadRequest(ModelState);
-        }
 
         private void HandleException(Exception ex)
         {
