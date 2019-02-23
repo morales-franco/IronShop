@@ -10,6 +10,7 @@ import { map } from "rxjs/operators";
 import { LoginGoogle } from '../../models/login-google.model';
 import { Profile } from '../../models/profile.model';
 import { IronToken } from '../../models/iron-token.model';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -17,7 +18,8 @@ import { IronToken } from '../../models/iron-token.model';
 })
 export class UserService {
   constructor(private _httpClient: HttpClient,
-    private _sessionService: SessionService) {
+    private _sessionService: SessionService,
+    private _router : Router) {
     console.log("User service started!");
   }
 
@@ -34,14 +36,14 @@ export class UserService {
 
     return this._httpClient.post(url, user)
       .pipe(
-        map((ironToken : IronToken) => {
+        map((ironToken: IronToken) => {
           this.saveCredentials(ironToken);
           return true;
         })
       );
   }
-  
-  loginGoogle(user: LoginGoogle){
+
+  loginGoogle(user: LoginGoogle) {
     let url = `${environment.WEBAPI_ENDPOINT}/account/login/google`;
 
     return this._httpClient.post(url, user)
@@ -49,14 +51,14 @@ export class UserService {
         map((ironToken: IronToken) => {
           this.saveCredentials(ironToken);
           return true;
-        }) 
+        })
       );
 
   }
 
   saveCredentials(ironToken: IronToken) {
-    console.log(ironToken);
     this._sessionService.setItem(SessionConstants.IronToken, ironToken.token);
+    this._sessionService.setItem(SessionConstants.ExpirationToken, ironToken.expiration.toString());
     this._sessionService.setObject(SessionConstants.User, ironToken.profile);
   }
 
@@ -67,11 +69,33 @@ export class UserService {
       this._sessionService.removeItem(SessionConstants.RememberMe);
   }
 
-  getCurrentUser(): Profile{
+  getCurrentUser(): Profile {
     let user: Profile = this._sessionService.getObject(SessionConstants.User) || null;
     return user;
   }
 
+  getToken(): string {
+    let token: string = this._sessionService.getItem(SessionConstants.IronToken) || null;
+    return token;
+  }
 
+  getExpirationToken(): Date {
+    let expiration: string = this._sessionService.getItem(SessionConstants.ExpirationToken) || null;
+    return expiration == null ? null : new Date(expiration);
+  }
+
+  existSessionActive() {
+    let token: string = this.getToken();
+    let expiration: Date = this.getExpirationToken();
+    return token != null && expiration != null && expiration > new Date(Date.now());
+
+  }
+
+  logout(){
+    this._sessionService.removeItem(SessionConstants.IronToken);
+    this._sessionService.removeItem(SessionConstants.ExpirationToken);
+    this._sessionService.removeItem(SessionConstants.User);
+    this._router.navigate(['/login']);
+  }
 
 }

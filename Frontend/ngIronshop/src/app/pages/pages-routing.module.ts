@@ -7,6 +7,7 @@ import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { IronGuard } from '../services/guard/iron.guard';
 
 
 
@@ -14,6 +15,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 const pagesRoutes: Routes = [
   { path:'', 
     component: LayoutComponent,
+    canActivate: [IronGuard],
     children: [
       { path: 'home', component: HomeComponent, data : { title : 'Home'} },
       { path: 'progress', component: ProgressComponent, data : { title : 'Progress'} },
