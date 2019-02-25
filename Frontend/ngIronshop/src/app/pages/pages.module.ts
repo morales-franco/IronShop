@@ -14,6 +14,8 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '../interceptors/auth.interceptor';
 
 
 
@@ -41,6 +43,9 @@ import { ProfileComponent } from './profile/profile.component';
   exports: [
     HomeComponent,
     LayoutComponent
+  ],
+  providers:[
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ]
 })
 export class PageModule { }

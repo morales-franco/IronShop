@@ -208,11 +208,11 @@ namespace IronShop.Api.Controllers
         }
 
 
-        // PUT: api/User/1
-        [HttpPut("{id}")]
+        // PUT: api/User/Profile/1
+        [HttpPut("Profile/{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Update(long id, ProfileDto user)
+        public async Task<IActionResult> UpdateProfile(long id, ProfileDto user)
         {
             if (id != user.UserId)
             {
@@ -224,8 +224,8 @@ namespace IronShop.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userToChange = new User(user.UserId, user.FullName, user.Email, user.Role);
-            await _service.Update(userToChange);
+            var userToChange = new User(user.UserId, user.FullName, user.Email);
+            await _service.UpdateProfile(userToChange);
 
             return NoContent();
         }

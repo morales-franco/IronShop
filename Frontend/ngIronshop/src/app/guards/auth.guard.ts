@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from '../user/user.service';
+import { UserService } from '../services/user/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class IronGuard implements CanActivate, CanActivateChild {
+export class AuthGuard implements CanActivate, CanActivateChild {
   
 
   constructor(private _userService : UserService,
@@ -16,7 +16,6 @@ export class IronGuard implements CanActivate, CanActivateChild {
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     if(!this._userService.existSessionActive())
     {
-      console.log("Session does not exist");
       this._route.navigate(['/login'])
       return false;
     }

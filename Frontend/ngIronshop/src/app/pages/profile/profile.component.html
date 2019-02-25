@@ -1,41 +1,41 @@
-<div class="row">
-    <div class="col-lg-6">
+<div class="row fadeIn">
+    <div class="col-lg-7">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">User Profile</h4>
                 <h6 class="card-subtitle">Update personal data</h6>
-                <form class="form-horizontal p-t-20">
+                <form ngNativeValidate #profileForm="ngForm" (ngSubmit)="updateProfile(profileForm)" class="form-horizontal p-t-20">
                     <div class="form-group row">
-                        <label for="exampleInputuname3" class="col-sm-3 control-label">Fullname*</label>
+                        <label for="fullName" class="col-sm-3 control-label">Fullname*</label>
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="ti-user"></i></div>
-                                <input type="text" class="form-control" id="exampleInputuname3" placeholder="Fullname">
+                                <input [(ngModel)]="userFullName" name="fullName" type="text" class="form-control" id="fullName" required>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="exampleInputEmail3" class="col-sm-3 control-label">Email*</label>
+                        <label for="email" class="col-sm-3 control-label">Email*</label>
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="ti-email"></i></div>
-                                <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Enter email">
+                                <input [(ngModel)]="userEmail" name="email" type="email" class="form-control" id="email" required>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="exampleInputEmail3" class="col-sm-3 control-label">Role*</label>
+                        <label for="role" class="col-sm-3 control-label">Role*</label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <div class="input-group-addon"><i class="ti-email"></i></div>
-                                <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Enter email">
+                                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                                <input [ngModel]="userRole" name="role" type="text" class="form-control" id="role" readonly="true">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group row m-b-0">
                         <div class="offset-sm-3 col-sm-9">
-                            <button type="submit" class="btn btn-success waves-effect waves-light">
+                            <button type="submit" class="btn btn-block btn-success waves-effect waves-light">
                               <i class="fa fa-save"></i>
                               Save
                             </button>
@@ -45,3 +45,26 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Profile Picture</h4>
+                <h6 class="card-subtitle">Pic!</h6>
+                <form class="form-horizontal p-t-20">
+                    <img src="" />
+                    <div class="form-group">
+                        <label>Upload pic</label>
+                        <input type="file" class="form-control" id="image" aria-describedby="fileHelp">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block btn-success waves-effect waves-light">
+                                <i class="fa fa-save"></i>
+                                Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

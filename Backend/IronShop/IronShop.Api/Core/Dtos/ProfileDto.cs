@@ -16,6 +16,7 @@ namespace IronShop.Api.Core.Dtos
         public string Email { get; set; }
         public string Role { get; set; }
         public string ImageFileName { get; set; }
+        public bool GoogleAuth { get; set; }
 
     }
 }

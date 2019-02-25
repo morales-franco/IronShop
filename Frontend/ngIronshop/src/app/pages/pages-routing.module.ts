@@ -7,13 +7,12 @@ import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
-import { IronGuard } from '../services/guard/iron.guard';
 import { ProfileComponent } from './profile/profile.component';
-
+import { AuthGuard } from '../guards/auth.guard';
 
 /*
 @FM:canActivateChild
-This version check IronGuard when user access to the module.
+This version check AuthGuard when user access to the module.
 canActivate only check permission one time. 
 No check when user routing throw children routes.
 Example Login --> home --> canActivate check!
@@ -22,13 +21,13 @@ home --> progress --> canActivate NO check!
 1)In this case if I login to the app --> I have a token in local storage.
 2)login --> home --> pass it! --> save token
 3)user clear local storage in browser
-4)home --> progress --> NO problem IronGuard No check permission again!
+4)home --> progress --> NO problem AuthGuard No check permission again!
 
 
 const pagesRoutes: Routes = [
   { path:'', 
     component: LayoutComponent,
-    canActivate: [IronGuard],
+    canActivate: [AuthGuard],
     children: [
       { path: 'home', component: HomeComponent, data : { title : 'Home'} },
       { path: 'progress', component: ProgressComponent, data : { title : 'Progress'} },
@@ -41,8 +40,8 @@ const pagesRoutes: Routes = [
 ];
 
 Solution:
-Create a child component-less and set canActivateChild: [IronGuard] instead of adding 
-the  [IronGuard]  to each route individually.
+Create a child component-less and set canActivateChild: [AuthGuard] instead of adding 
+the  [AuthGuard]  to each route individually.
 
 canActivateChild check permission in child routes.
  */
@@ -51,11 +50,11 @@ const pagesRoutes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    canActivate: [IronGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
-        canActivateChild: [IronGuard],
+        canActivateChild: [AuthGuard],
         children: [
           { path: 'home', component: HomeComponent, data: { title: 'Home' } },
           { path: 'progress', component: ProgressComponent, data: { title: 'Progress' } },

@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../services/user/user.service';
+import { Profile } from '../../models/profile.model';
+import { NgForm } from '@angular/forms';
+import swal from "sweetalert";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -7,9 +12,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  private userId : number;
+  userFullName : string;
+  userEmail : string;
+  userRole : string;
+
+  constructor(private _userService: UserService,
+   private _router: Router ) { }
 
   ngOnInit() {
+    this.userId = this._userService.currentUser.userId;
+    this.userFullName = this._userService.currentUser.fullName;
+    this.userEmail = this._userService.currentUser.email;
+    this.userRole = this._userService.currentUser.role;
+  }
+
+  updateProfile(profileForm: NgForm){
+
+    if(profileForm.invalid){
+      swal("Error", "Please, complete required fields.", "error");
+      return;
+    }
+
+    let userModified: Profile = new Profile(
+      this.userId,
+      this.userFullName, 
+      this.userEmail
+    );
+
+    this._userService.updateProfile(userModified)
+        .subscribe(r => {
+          swal("Success", "User was updated successfully!", "success");
+          this._router.navigate(["/home"]);
+        });
   }
 
 }

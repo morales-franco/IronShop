@@ -48,7 +48,6 @@ namespace IronShop.Api.Core.Entities
         {
             Guard.Against.NullOrEmpty(fullName, nameof(fullName));
             Guard.Against.NullOrEmpty(email, nameof(email));
-            Guard.Against.NullOrEmpty(role, nameof(role));
 
             UserId = userId;
             FullName = fullName;

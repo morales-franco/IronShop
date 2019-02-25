@@ -18,6 +18,7 @@ namespace IronShop.Api.Core.IServices
         Task<User> GetById(int id);
         Task Register(User user);
         Task Update(User user);
+        Task UpdateProfile(User user);
         Task Delete(User user);
         Task ChangePassword(User user);
         Task<IronToken> Login(User user);

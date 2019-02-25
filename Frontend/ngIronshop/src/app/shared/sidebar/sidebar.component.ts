@@ -9,18 +9,14 @@ import { Profile } from '../../models/profile.model';
   styles: []
 })
 export class SidebarComponent implements OnInit {
-
-  profile: Profile;
-  
   constructor(public _sidebarService : SidebarService,
-    private _userService: UserService) { }
+    public userService: UserService) { }
 
   ngOnInit() {
-    this.profile = this._userService.getCurrentUser();
   }
 
   logout(){
-    this._userService.logout();
+    this.userService.logout();
   }
 
 }

@@ -8,15 +8,12 @@ import { Profile } from '../../models/profile.model';
 })
 export class HeaderComponent implements OnInit {
 
-   profile: Profile;
-
-  constructor(private _userService: UserService) { }
+  constructor(public userService: UserService) { }
 
   ngOnInit() {
-    this.profile = this._userService.getCurrentUser();
   }
 
   logout(){
-    this._userService.logout();
+    this.userService.logout();
   }
 }

@@ -17,10 +17,22 @@ import { Router } from '@angular/router';
   providedIn: ServiceModule
 })
 export class UserService {
+  /*
+  @FM:Profile Variable
+  It's necessary because when I update Profile, I need to reference currentUser in 
+  sidebar & header for update email & name inmmediatly.
+  I can't use this way:
+  auxUser: Profile = _userService.currentUser;
+  and reference auxUser in sidebar & header. 
+  This way not refresh auxUser variable when we update the profile, 
+  however _userService.currentUser has been updated.
+  */
+  currentUser: Profile;
+
   constructor(private _httpClient: HttpClient,
     private _sessionService: SessionService,
     private _router : Router) {
-    console.log("User service started!");
+      this.currentUser = this.getCurrentUser();
   }
 
   register(userRegister: Register) {
@@ -56,20 +68,25 @@ export class UserService {
 
   }
 
-  saveCredentials(ironToken: IronToken) {
+  private saveCredentials(ironToken: IronToken) {
     this._sessionService.setItem(SessionConstants.IronToken, ironToken.token);
     this._sessionService.setItem(SessionConstants.ExpirationToken, ironToken.expiration.toString());
-    this._sessionService.setObject(SessionConstants.User, ironToken.profile);
+    this.updateProfileInSession(ironToken.profile);
   }
 
-  setRememberMe(rememberMe: boolean, userEmail: string) {
+  private updateProfileInSession(profile: Profile){
+    this._sessionService.setObject(SessionConstants.User, profile);
+    this.currentUser = profile;
+  }
+
+  private setRememberMe(rememberMe: boolean, userEmail: string) {
     if (rememberMe)
       this._sessionService.setItem(SessionConstants.RememberMe, userEmail);
     else
       this._sessionService.removeItem(SessionConstants.RememberMe);
   }
 
-  getCurrentUser(): Profile {
+  private getCurrentUser(): Profile {
     let user: Profile = this._sessionService.getObject(SessionConstants.User) || null;
     return user;
   }
@@ -86,8 +103,9 @@ export class UserService {
 
   existSessionActive() {
     let token: string = this.getToken();
+    let currentUser: Profile = this.getCurrentUser();
     let expiration: Date = this.getExpirationToken();
-    return token != null && expiration != null && expiration > new Date(Date.now());
+    return currentUser != null && token != null && expiration != null && expiration > new Date(Date.now());
 
   }
 
@@ -96,6 +114,21 @@ export class UserService {
     this._sessionService.removeItem(SessionConstants.ExpirationToken);
     this._sessionService.removeItem(SessionConstants.User);
     this._router.navigate(['/login']);
+  }
+
+  updateProfile(user: Profile){
+    let url = `${environment.WEBAPI_ENDPOINT}/user/Profile/${user.userId}`;
+
+    return this._httpClient.put(url, user)
+      .pipe(
+        map((result:any) => {
+          let currentProfile : Profile = this.getCurrentUser();
+          currentProfile.email = user.email;
+          currentProfile.fullName = user.fullName;
+          this.updateProfileInSession(currentProfile);
+          return true;
+        })
+      );
   }
 
 }

@@ -104,6 +104,25 @@ namespace IronShop.Api.Core.Services
             await _unitOfWork.Commit();
         }
 
+        public async Task UpdateProfile(User user)
+        {
+            var userBd = await _unitOfWork.Users.GetById(user.UserId);
+
+            if (userBd.Email != user.Email.Trim())
+            {
+                if (userBd.GoogleAuth)
+                    throw new ValidationException("You can not modify google email");
+
+                if (!(await IsEmailUnique(user.Email)))
+                    throw new ValidationException("Email address is already registered");
+            }
+
+            userBd.Modify(user.FullName, user.Email, userBd.Role);
+
+            _unitOfWork.Users.Update(userBd);
+            await _unitOfWork.Commit();
+        }
+
         public async Task ChangePassword(User user)
         {
             var userBd = await _unitOfWork.Users.GetById(user.UserId);
