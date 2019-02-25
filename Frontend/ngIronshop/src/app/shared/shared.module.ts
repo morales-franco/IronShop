@@ -8,6 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { PreloaderComponent } from './preloader/preloader.component';
 import { Error404Component } from './error/error404/error404.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 /*
 @FM:
@@ -21,7 +22,8 @@ ngModel o funciones como (ngSubmit)
 @NgModule({
   imports:[
     RouterModule,
-    CommonModule
+    CommonModule,
+    PipesModule
   ],
   declarations: [
     HeaderComponent,

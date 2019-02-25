@@ -94,7 +94,10 @@ namespace IronShop.Api.Core.Services
         {
             var userBd = await _unitOfWork.Users.GetById(user.UserId);
 
-            userBd.ValidateChangeEmail(user.Email);
+            if(userBd.Email != user.Email.Trim())
+                if (!(await IsEmailUnique(user.Email)))
+                    throw new ValidationException("Email address is already registered");
+
             userBd.Modify(user.FullName, user.Email, user.Role);
 
             _unitOfWork.Users.Update(userBd);

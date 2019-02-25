@@ -44,7 +44,7 @@ namespace IronShop.Api.Core.Entities
             GoogleAuth = googleUser;
         }
 
-        public User(int userId, string fullName, string email, string role)
+        public User(int userId, string fullName, string email, string role= null)
         {
             Guard.Against.NullOrEmpty(fullName, nameof(fullName));
             Guard.Against.NullOrEmpty(email, nameof(email));
@@ -53,7 +53,7 @@ namespace IronShop.Api.Core.Entities
             UserId = userId;
             FullName = fullName;
             Email = email;
-            Role = role;
+            Role = role ?? AuthConstants.Role_User;
         }
 
         public User(int userId, string password)
@@ -93,12 +93,6 @@ namespace IronShop.Api.Core.Entities
             FullName = fullName;
             Email = email;
             Role = role;
-        }
-
-        public void ValidateChangeEmail(string email)
-        {
-            if (Email.ToLower() != email.ToLower())
-                throw new ValidationException("You can't change email address");
         }
 
         internal bool IsMyPassword(string password)

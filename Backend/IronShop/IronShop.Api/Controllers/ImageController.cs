@@ -12,7 +12,6 @@ namespace IronShop.Api.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    [Authorize]
     public class ImageController : ControllerBase
     {
         private readonly IFileService _fileService;

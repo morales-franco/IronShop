@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  WEBAPI_ENDPOINT: "http://localhost:5362/api/public"
+  WEBAPI_ENDPOINT: "http://localhost:58688/api"
 };
 
 /*

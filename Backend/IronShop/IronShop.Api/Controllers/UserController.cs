@@ -212,7 +212,7 @@ namespace IronShop.Api.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Update(long id, ChangeUserDto user)
+        public async Task<IActionResult> Update(long id, ProfileDto user)
         {
             if (id != user.UserId)
             {

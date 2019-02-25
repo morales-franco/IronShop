@@ -8,6 +8,7 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { IronGuard } from '../services/guard/iron.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 
 /*
@@ -59,6 +60,7 @@ const pagesRoutes: Routes = [
           { path: 'home', component: HomeComponent, data: { title: 'Home' } },
           { path: 'progress', component: ProgressComponent, data: { title: 'Progress' } },
           { path: 'account-settings', component: AccountSettingsComponent, data: { title: 'Configuración' } },
+          { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
           { path: 'promesas', component: PromesasComponent, data: { title: 'Promesas' } },
           { path: 'rxjs', component: RxjsComponent, data: { title: 'RxJs - Observables' } },
           { path: '', redirectTo: '/home', pathMatch: 'full' }
