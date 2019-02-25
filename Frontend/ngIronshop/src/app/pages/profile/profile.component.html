@@ -19,7 +19,7 @@
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="ti-email"></i></div>
-                                <input [(ngModel)]="userEmail" name="email" type="email" class="form-control" id="email" required>
+                                <input [(ngModel)]="userEmail" [disabled]="googleAuth" name="email" type="email" class="form-control" id="email" required>
                             </div>
                         </div>
                     </div>

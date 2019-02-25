@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   userFullName : string;
   userEmail : string;
   userRole : string;
+  googleAuth: boolean;
 
   constructor(private _userService: UserService,
    private _router: Router ) { }
@@ -25,6 +26,7 @@ export class ProfileComponent implements OnInit {
     this.userFullName = this._userService.currentUser.fullName;
     this.userEmail = this._userService.currentUser.email;
     this.userRole = this._userService.currentUser.role;
+    this.googleAuth = this._userService.currentUser.googleAuth;
   }
 
   updateProfile(profileForm: NgForm){
