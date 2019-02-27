@@ -17,6 +17,9 @@ export class ProfileComponent implements OnInit {
   userEmail : string;
   userRole : string;
   googleAuth: boolean;
+  picture: File;
+  fileNamePicture : string;
+  pictureTemp: string;
 
   constructor(private _userService: UserService,
    private _router: Router ) { }
@@ -27,6 +30,7 @@ export class ProfileComponent implements OnInit {
     this.userEmail = this._userService.currentUser.email;
     this.userRole = this._userService.currentUser.role;
     this.googleAuth = this._userService.currentUser.googleAuth;
+    this.fileNamePicture = this._userService.currentUser.imageFileName;
   }
 
   updateProfile(profileForm: NgForm){
@@ -47,6 +51,37 @@ export class ProfileComponent implements OnInit {
           swal("Success", "User was updated successfully!", "success");
           this._router.navigate(["/home"]);
         });
+  }
+
+  onSelectPicture(picture: File){
+
+    if(!picture){
+      this.picture = null;
+      return;
+    }
+
+    if(picture.type.indexOf("image") < 0){
+      swal("Error", "Can upload only images!", "error");
+      this.picture = null;
+      return;
+    }
+    this.picture = picture;
+
+    let reader = new FileReader();
+    reader.readAsDataURL(picture);
+
+    reader.onloadend = () =>this.pictureTemp = reader.result.toString(); 
+
+  }
+
+  uploadProfile(){
+    this._userService.updateProfilePicture(this.picture, this.userId)
+      .then(resp => {
+        swal("Success", "Picture was updated successfully!", "success");
+      })
+      .catch(resp => {
+        swal("Error", "Can not upload picture!", "error");
+      });
   }
 
 }

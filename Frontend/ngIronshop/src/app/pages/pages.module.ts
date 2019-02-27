@@ -16,6 +16,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -38,7 +39,8 @@ import { AuthInterceptor } from '../interceptors/auth.interceptor';
     PagesRoutingModule,
     FormsModule,
     ChartsModule,
-    PipesModule
+    PipesModule,
+    CommonModule
   ],
   exports: [
     HomeComponent,

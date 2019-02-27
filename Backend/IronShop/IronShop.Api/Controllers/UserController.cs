@@ -294,7 +294,7 @@ namespace IronShop.Api.Controllers
 
         // PUT: api/User/UploadProfilePicture
         [HttpPut("UploadProfilePicture/{id}")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> UploadProfilePicture(int id)
         {
@@ -309,12 +309,12 @@ namespace IronShop.Api.Controllers
             if (!validExtensions.Any(e => e == imageExtension.ToLower()))
                 return BadRequest($"Format Image Not valid - valid Formats: { string.Join(",", validExtensions) }");
 
-            var user = await _service.GetById(id);
-            if (user == null)
-                return NotFound();
-
             await _service.UploadImage(id, imageFile);
-            return NoContent();
+            var user = await _service.GetById(id);
+
+            var profile = _mapper.Map<ProfileDto>(user);
+
+            return Ok(profile);
         }
 
     }

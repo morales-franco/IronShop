@@ -131,4 +131,32 @@ export class UserService {
       );
   }
 
+  updateProfilePicture(file: File, userId: number){
+    return new Promise((resolve, reject) => {
+      let formData = new FormData();
+      let xhr = new XMLHttpRequest();
+  
+      formData.append("file", file, file.name);
+      xhr.onreadystatechange = () =>{
+  
+        if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            let response: Profile = JSON.parse(xhr.response);
+            this.updateProfileInSession(response);
+            resolve();
+          }else{
+            console.log(JSON.parse(xhr.response));
+            reject();
+          }
+        }
+      };
+
+    let url = `${environment.WEBAPI_ENDPOINT}/user/UploadProfilePicture/${userId}`;
+    
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this.getToken());
+    xhr.send(formData);
+    });
+  }
+
 }
