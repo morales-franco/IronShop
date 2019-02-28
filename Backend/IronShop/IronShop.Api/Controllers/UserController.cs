@@ -102,7 +102,7 @@ namespace IronShop.Api.Controllers
             return paginableList;
         }
 
-        public virtual KeyValuePair<string, object>[] ParseIndexQueryString(IQueryCollection queryString)
+        private KeyValuePair<string, object>[] ParseIndexQueryString(IQueryCollection queryString)
         {
             List<KeyValuePair<string, object>> values = new List<KeyValuePair<string, object>>();
             List<string> ignoredKeys = new List<string>() { "Length", "X-Requested-With", "_", "page", "__swhg", "sort", "sortdir" };
@@ -114,23 +114,22 @@ namespace IronShop.Api.Controllers
                     !string.IsNullOrEmpty(queryString[key]) &&
                     !ignoredKeys.Contains(key))
                 {
-                    //Parseo de valores boolean & datetimes
-                    switch (queryString[key])
+                    if (queryString[key] == "true" || queryString[key] == "false")
                     {
-                        case "true":
-                            values.Add(new KeyValuePair<string, object>(key, true));
-                            break;
-                        case "false":
-                            values.Add(new KeyValuePair<string, object>(key, false));
-                            break;
-                        default:
-                            DateTime aux = DateTime.Now;
-                            if (DateTime.TryParse(queryString[key].ToString(), out aux))
-                                values.Add(new KeyValuePair<string, object>(key, aux));
-                            else
-                                values.Add(new KeyValuePair<string, object>(key, queryString[key].ToString()));
-                            break;
+                        values.Add(new KeyValuePair<string, object>(key, queryString[key] == "true"));
+                        continue;
                     }
+
+                    string[] format = new string[] { "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm:ss", "MM/dd/yyyy HH:mm", "dd/MM/yyyy", "MM/dd/yyyy" };
+                    DateTime auxDate;
+
+                    if (DateTime.TryParseExact(queryString[key].ToString(), format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out auxDate))
+                    {
+                        values.Add(new KeyValuePair<string, object>(key, auxDate));
+                        continue;
+                    }
+
+                    values.Add(new KeyValuePair<string, object>(key, queryString[key].ToString()));
                 }
             }
             return values.ToArray();

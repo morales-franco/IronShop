@@ -82,9 +82,6 @@ export class LoginComponent implements OnInit {
   }
 
   login(loginForm: NgForm) {
-
-    console.log(loginForm.value.email);
-
     let userLogin: Login = new Login(
       loginForm.value.email,
       loginForm.value.password
@@ -92,7 +89,6 @@ export class LoginComponent implements OnInit {
 
     this._userService.login(userLogin, loginForm.value.rememberMe)
       .subscribe(u => this._router.navigate(['/home']));
-
   }
 
 }

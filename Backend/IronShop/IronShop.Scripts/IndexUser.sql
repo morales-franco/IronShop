@@ -22,7 +22,7 @@ BEGIN
 	DECLARE @select VARCHAR(MAX)='';
 	DECLARE @orderBy VARCHAR(100)='';
 
-	SET @select = 'SELECT [UserId], FullName, Email, [Role]
+	SET @select = 'SELECT [UserId], FullName, Email, [Role], ImageFileName, GoogleAuth
 				   FROM [User]
 				   WHERE 1 = 1 ';
 
@@ -60,7 +60,7 @@ BEGIN
 				(
 					SELECT COUNT([UserId]) AS TotalRows FROM DataRows
 				)
-				SELECT [UserId], FullName, Email, [Role], [TotalRows]
+				SELECT [UserId], FullName, Email, [Role], ImageFileName, GoogleAuth, [TotalRows]
 				FROM [DataRows] CROSS JOIN DataTotalCount 
 				ORDER BY ' + @orderBy +
 			  ' OFFSET ('+ CONVERT(VARCHAR,@pageNumber)  +' - 1) * ' +CONVERT(VARCHAR, @pageSize) +' ROWS
@@ -90,7 +90,7 @@ CREATE PROCEDURE IndexUser
 )
 AS
 BEGIN
-	SELECT [UserId], FullName, Email, [Role]
+	SELECT [UserId], FullName, Email, [Role], ImageFileName, GoogleAuth
 	FROM [User]
 	WHERE (@fullName IS NULL OR  FullName LIKE '%' + @fullName + '%') AND
 		  (@email IS NULL OR  Email LIKE '%' + @email + '%') AND

@@ -11,6 +11,8 @@ import { LoginGoogle } from '../../models/login-google.model';
 import { Profile } from '../../models/profile.model';
 import { IronToken } from '../../models/iron-token.model';
 import { Router } from '@angular/router';
+import { UserIndex } from '../../models/user.index.model';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -157,6 +159,25 @@ export class UserService {
     xhr.setRequestHeader('Authorization', 'Bearer ' + this.getToken());
     xhr.send(formData);
     });
+  }
+
+  getList(pageSize: number, pageNumber: number, dir: string, sort: string, fullName: string=null, email: string=null){
+    let url = `${environment.WEBAPI_ENDPOINT}/User/GetAllPagedSP?pageSize=${pageSize}&pageNumber=${pageNumber}&dir=${dir}&sort=${sort}`;
+    
+    if(fullName != null){
+      url+= `&fullName=${fullName}`
+    }
+
+    if(email != null){
+      url+= `&fullName=${email}`
+    }
+
+    return this._httpClient.get(url);
+  }
+
+  delete(userId: number){
+    let url = `${environment.WEBAPI_ENDPOINT}/User/${userId}`;
+    return this._httpClient.delete(url);
   }
 
 }

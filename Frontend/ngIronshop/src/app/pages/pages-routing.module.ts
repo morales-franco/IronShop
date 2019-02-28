@@ -9,6 +9,7 @@ import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { UsersComponent } from './users/users.component';
 
 /*
 @FM:canActivateChild
@@ -59,9 +60,12 @@ const pagesRoutes: Routes = [
           { path: 'home', component: HomeComponent, data: { title: 'Home' } },
           { path: 'progress', component: ProgressComponent, data: { title: 'Progress' } },
           { path: 'account-settings', component: AccountSettingsComponent, data: { title: 'Configuración' } },
-          { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
           { path: 'promesas', component: PromesasComponent, data: { title: 'Promesas' } },
           { path: 'rxjs', component: RxjsComponent, data: { title: 'RxJs - Observables' } },
+
+          { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
+          { path: 'users', component: UsersComponent, data: { title: 'Users' } },
+
           { path: '', redirectTo: '/home', pathMatch: 'full' }
         ]
       }]

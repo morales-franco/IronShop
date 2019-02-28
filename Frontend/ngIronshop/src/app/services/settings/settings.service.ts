@@ -22,7 +22,6 @@ export class SettingsService {
   };
 
   constructor(@Inject(DOCUMENT) private _document) {
-    console.log("INIT SETTINGS SERVICE");
     this.loadSettings();
    }
 

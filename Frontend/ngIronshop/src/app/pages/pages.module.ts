@@ -17,6 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { CommonModule } from '@angular/common';
+import { UsersComponent } from './users/users.component';
 
 
 
@@ -32,7 +33,8 @@ import { CommonModule } from '@angular/common';
     AccountSettingsComponent,
     PromesasComponent,
     RxjsComponent,
-    ProfileComponent
+    ProfileComponent,
+    UsersComponent
   ],
   imports:[
     SharedModule,

@@ -1,0 +1,78 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #term (keyup)="search(term.value)" type="text" class="form-control" placeholder="Enter user name" />
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row animated fadeIn" *ngIf="loading">
+    <div class="col-sm-12">
+        <div class="alert alert-warning text-center">
+            <strong>Loading</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Wait please</span>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!loading">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h3 class="card-title">Registered Users( <small>{{totalRows}}</small> ) </h3>
+
+
+                <table class="table table-hover">
+                    <thead>
+                        <th>Picture</th>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Auth</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users">
+                            <td class="w70">
+                                <img [src]="user.imageFileName | image" class="img-50 imag-circle" />
+                            </td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.fullName}}</td>
+                            <td>{{user.role}}</td>
+                            <td>
+                                <label *ngIf="user.googleAuth" class="label label-danger">Google</label>
+                                <label *ngIf="!user.googleAuth" class="label label-info">Normal</label>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary">
+                                    <i class="fa fa-save"></i>
+                                </button>
+                                <button (click)="delete(user)" class="btn btn-danger">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button class="btn btn-secondary" (click)="goToPreviousPage()">
+                  Previous
+                </button>
+                <button class="btn btn-secondary" (click)="goToNextPage()">
+                    Next
+                  </button>
+
+            </div>
+        </div>
+    </div>
+
+</div>

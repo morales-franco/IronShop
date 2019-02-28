@@ -13,6 +13,9 @@ namespace IronShop.Api.Core.Dtos.Index
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        public string ImageFileName { get; set; }
+        public bool GoogleAuth { get; set; }
+
 
         public int TotalRows { get; set; }
     }
