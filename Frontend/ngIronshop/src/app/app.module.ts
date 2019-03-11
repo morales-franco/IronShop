@@ -16,7 +16,6 @@ import { AppRoutingModule } from './app-routing.module';
 //Components
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
-
 /*
 @FM:
 Look at the module imports array. 

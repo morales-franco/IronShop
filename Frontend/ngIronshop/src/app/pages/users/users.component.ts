@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { UserIndex } from "../../models/user.index.model";
 import { UserService } from "../../services/user/user.service";
 import swal from "sweetalert";
+import { Profile } from '../../models/profile.model';
 
 @Component({
   selector: "app-users",
@@ -97,4 +98,42 @@ export class UsersComponent implements OnInit {
         });
     });
   }
+
+  save(user: UserIndex) {
+    swal({
+      title: "Are you sure?",
+      text: "Confirm the operation, please.",
+      icon: "warning",
+      buttons: ["cancel", "confirm"],
+      dangerMode: true
+    }).then(willUpdate => {
+
+      if (!willUpdate) {
+        return;
+      }
+
+      this.loading = true;
+
+      let profile: Profile = new Profile
+      (
+        user.userId,
+        user.fullName,
+        user.email,
+        user.role
+      );
+
+      this._userService.updateProfile(profile)
+        .subscribe(r=> {
+          swal("Success", "User was updated successfully.", "success");
+          this.loadGrid();
+        },
+        error => {
+          swal("Error", "Internal Error, user wasn't updated.", "error");
+          this.loading = false;
+        });
+    });
+  }
+
 }
+
+

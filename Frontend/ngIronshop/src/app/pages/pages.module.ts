@@ -18,10 +18,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { CommonModule } from '@angular/common';
 import { UsersComponent } from './users/users.component';
-
-
-
-
+import { ModalImageUploadComponent } from '../components/modal-image-upload/modal-image-upload.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +31,8 @@ import { UsersComponent } from './users/users.component';
     PromesasComponent,
     RxjsComponent,
     ProfileComponent,
-    UsersComponent
+    UsersComponent,
+    ModalImageUploadComponent
   ],
   imports:[
     SharedModule,

@@ -43,7 +43,8 @@ export class ProfileComponent implements OnInit {
     let userModified: Profile = new Profile(
       this.userId,
       this.userFullName, 
-      this.userEmail
+      this.userEmail,
+      this.userRole
     );
 
     this._userService.updateProfile(userModified)

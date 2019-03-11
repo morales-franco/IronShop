@@ -117,7 +117,7 @@ namespace IronShop.Api.Core.Services
                     throw new ValidationException("Email address is already registered");
             }
 
-            userBd.Modify(user.FullName, user.Email, userBd.Role);
+            userBd.Modify(user.FullName, user.Email, user.Role);
 
             _unitOfWork.Users.Update(userBd);
             await _unitOfWork.Commit();

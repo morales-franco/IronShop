@@ -206,6 +206,10 @@ namespace IronShop.Api.Controllers
                 throw ex; //Delegate error 500 at Middleware
         }
 
+        /*
+         * TODO: It should be Update User Not Profile.
+         * 
+         */
 
         // PUT: api/User/Profile/1
         [HttpPut("Profile/{id}")]
@@ -223,7 +227,7 @@ namespace IronShop.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userToChange = new User(user.UserId, user.FullName, user.Email);
+            var userToChange = new User(user.UserId, user.FullName, user.Email, user.Role);
             await _service.UpdateProfile(userToChange);
 
             return NoContent();

@@ -125,9 +125,14 @@ export class UserService {
       .pipe(
         map((result:any) => {
           let currentProfile : Profile = this.getCurrentUser();
-          currentProfile.email = user.email;
-          currentProfile.fullName = user.fullName;
-          this.updateProfileInSession(currentProfile);
+
+          if(currentProfile.userId == user.userId){
+            currentProfile.email = user.email;
+            currentProfile.fullName = user.fullName;
+            currentProfile.role = user.role;
+            this.updateProfileInSession(currentProfile);
+          }
+
           return true;
         })
       );
