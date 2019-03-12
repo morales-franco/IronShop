@@ -149,8 +149,12 @@ export class UserService {
         if(xhr.readyState === 4){
           if(xhr.status === 200){
             let response: Profile = JSON.parse(xhr.response);
-            this.updateProfileInSession(response);
-            resolve();
+
+            if(userId === this.currentUser.userId){
+              this.updateProfileInSession(response);
+            }
+            
+            resolve(response);
           }else{
             console.log(JSON.parse(xhr.response));
             reject();

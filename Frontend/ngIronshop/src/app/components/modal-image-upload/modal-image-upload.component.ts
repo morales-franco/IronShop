@@ -9,10 +9,9 @@ import { ModalImageUploadService } from './modal-image-upload.service';
 
 export class ModalImageUploadComponent implements OnInit {
   picture: File;
-  fileNamePicture : string;
   pictureTemp: string;
 
-  constructor(private _modalUploadService: ModalImageUploadService) { 
+  constructor(public modalUploadService: ModalImageUploadService) { 
 
   }
 
@@ -21,17 +20,15 @@ export class ModalImageUploadComponent implements OnInit {
 
   hideModal(){
     this.picture = null;
-    this.fileNamePicture = "";
     this.pictureTemp = null;
-    this._modalUploadService.hideModal();
+    this.modalUploadService.hideModal();
   }
 
-
   uploadPicture(){
-    this._modalUploadService.uploadImage(this.picture)
+    this.modalUploadService.uploadImage(this.picture)
       .then(resp => {
         swal("Success", "Picture was updated successfully!", "success");
-        this._modalUploadService.uploadNotify.emit(resp);
+        this.modalUploadService.uploadEvent.emit(resp);
         this.hideModal();
       })
       .catch(resp => {

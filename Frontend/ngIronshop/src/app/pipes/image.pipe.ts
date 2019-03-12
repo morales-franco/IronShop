@@ -8,7 +8,7 @@ import { GeneralConstants } from '../commons/constants/general.constants';
 export class ImagePipe implements PipeTransform {
 
   transform(fileNameImage: string): any {
-    let url = `${environment.WEBAPI_ENDPOINT}/image/${ fileNameImage == null ? GeneralConstants.DefaultImage:  fileNameImage}`;
+    let url = `${environment.WEBAPI_ENDPOINT}/image/${ fileNameImage == null || fileNameImage === "" ? GeneralConstants.DefaultImage:  fileNameImage}`;
     return url;
   }
 

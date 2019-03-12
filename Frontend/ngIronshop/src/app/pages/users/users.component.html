@@ -43,7 +43,7 @@
                     <tbody>
                         <tr *ngFor="let user of users">
                             <td class="w70">
-                                <img [src]="user.imageFileName | image" class="img-50 imag-circle" />
+                                <img (click)="showModalUploadPicture(user)" [src]="user.imageFileName | image" class="img-50 imag-circle pointer" />
                             </td>
                             <td>{{user.email}}</td>
                             <td>{{user.fullName}}</td>

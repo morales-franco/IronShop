@@ -8,10 +8,10 @@ import swal from "sweetalert";
 })
 export class ModalImageUploadService {
 
-  public type: string;
-  public id: number;
+  private type: string;
+  private id: number;
   public hideCssClass : string = 'hide-modal';
-  public uploadNotify = new EventEmitter<any>();
+  public uploadEvent = new EventEmitter<any>();
 
   constructor(private _UserService : UserService) { }
 
@@ -25,7 +25,7 @@ export class ModalImageUploadService {
     this.type = type;
   }
 
-  uploadImage(picture: File){
+  uploadImage(picture: File): Promise<any>{
     return this._UserService.updateProfilePicture(picture, this.id);
     // if(this.type === "USER"){
       

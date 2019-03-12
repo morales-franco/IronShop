@@ -3,6 +3,7 @@ import { UserIndex } from "../../models/user.index.model";
 import { UserService } from "../../services/user/user.service";
 import swal from "sweetalert";
 import { Profile } from '../../models/profile.model';
+import { ModalImageUploadService } from '../../components/modal-image-upload/modal-image-upload.service';
 
 @Component({
   selector: "app-users",
@@ -16,9 +17,23 @@ export class UsersComponent implements OnInit {
   rowsPerPage: number = 5;
   loading: boolean = false;
 
-  constructor(private _userService: UserService) {}
+  constructor(private _userService: UserService,
+    private _modalImageUploadService: ModalImageUploadService) {}
 
   ngOnInit() {
+    this.loadGrid();
+
+    this._modalImageUploadService.uploadEvent.subscribe(
+      r => this.onUploadPictureSuccess(r),
+      error => {
+        swal("Error", "Internal Error, the picture was not updated.", "error");
+      });
+    
+  }
+
+  private onUploadPictureSuccess(user :any){
+    debugger;
+    swal("Success", "Operation successfully.", "success");
     this.loadGrid();
   }
 
@@ -132,6 +147,10 @@ export class UsersComponent implements OnInit {
           this.loading = false;
         });
     });
+  }
+
+  showModalUploadPicture(user: UserIndex){
+    this._modalImageUploadService.showModal(user.userId, "USER");
   }
 
 }

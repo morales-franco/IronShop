@@ -19,7 +19,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="hideModal()">Close</button>
-                    <button type="button" class="btn btn-primary" [disabled]="pictureTemp" (click)="uploadPicture()">Upload</button>
+                    <button type="button" class="btn btn-primary" [disabled]="!pictureTemp" (click)="uploadPicture()">Upload</button>
                 </div>
             </div>
         </div>
