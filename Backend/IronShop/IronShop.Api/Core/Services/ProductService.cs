@@ -45,6 +45,11 @@ namespace IronShop.Api.Core.Services
             return await _unitOfWork.Products.GetAll();
         }
 
+        public virtual async Task<IList<T>> GetList<T>(string storedProcedure, KeyValuePair<string, object>[] parameters) where T : class, new()
+        {
+            return await _unitOfWork.Products.GetList<T>(storedProcedure, parameters);
+        }
+
         public async Task<Product> GetById(int id)
         {
             return await _unitOfWork.Products.GetById(id);

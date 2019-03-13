@@ -46,7 +46,6 @@ namespace IronShop.Api.Controllers
 
         //TODO: Get all 
         // GET: api/User/GetAll
-        [HttpGet]
         [HttpGet("GetAll")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<UserIndexDto>>> GetAll()
@@ -67,7 +66,6 @@ namespace IronShop.Api.Controllers
 
         //TODO: Get all 
         // GET: api/User/GetAllSP
-        [HttpGet]
         [HttpGet("GetAllSP")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<UserIndexDto>>> GetAllSP()

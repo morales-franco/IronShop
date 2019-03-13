@@ -19,6 +19,7 @@ import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { CommonModule } from '@angular/common';
 import { UsersComponent } from './users/users.component';
 import { ModalImageUploadComponent } from '../components/modal-image-upload/modal-image-upload.component';
+import { ProductIndexComponent } from './products/product-index/product-index.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ModalImageUploadComponent } from '../components/modal-image-upload/moda
     RxjsComponent,
     ProfileComponent,
     UsersComponent,
-    ModalImageUploadComponent
+    ModalImageUploadComponent,
+    ProductIndexComponent
   ],
   imports:[
     SharedModule,

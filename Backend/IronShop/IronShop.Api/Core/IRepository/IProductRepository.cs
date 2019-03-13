@@ -9,6 +9,7 @@ namespace IronShop.Api.Core.IRepository
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetAll();
+        Task<IList<T>> GetList<T>(string storedProcedure, KeyValuePair<string, object>[] parameters) where T : class, new();
         Task<Product> GetById(int id);
         void Add(Product product);
         void Update(Product product);

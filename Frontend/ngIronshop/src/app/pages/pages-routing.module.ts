@@ -10,6 +10,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { UsersComponent } from './users/users.component';
+import { ProductIndexComponent } from './products/product-index/product-index.component';
 
 /*
 @FM:canActivateChild
@@ -65,6 +66,7 @@ const pagesRoutes: Routes = [
 
           { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
           { path: 'users', component: UsersComponent, data: { title: 'Users' } },
+          { path: 'products', component:ProductIndexComponent, data: { title : 'Products' } },
 
           { path: '', redirectTo: '/home', pathMatch: 'full' }
         ]

@@ -47,6 +47,10 @@ namespace IronShop.Api.Data.EntityConfigurations
                .Property(p => p.AuditDate)
                .IsRequired();
 
+            builder
+               .Property(u => u.ImageFileName)
+               .HasMaxLength(256);
+
         }
     }
 }

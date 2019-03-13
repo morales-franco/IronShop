@@ -1,11 +1,13 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using IronShop.Api.Core.Dtos;
+using IronShop.Api.Core.Dtos.Index;
 using IronShop.Api.Core.Entities;
+using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -39,6 +41,55 @@ namespace IronShop.Api.Controllers
             var products = await _service.GetAll();
             var model = MapEntityToDto(products);
             return model;
+        }
+
+
+        //TODO: Get all Paging with SP
+        // GET: api/Product/Page
+        [HttpGet("Page")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<PaginableList<ProductIndexDto>>> GetAllPagedSP()
+        {
+            var procedureName = "IndexPaged" + typeof(Product).Name;
+            var rows = await _service.GetList<ProductIndexDto>(procedureName, ParseIndexQueryString(Request.Query));
+
+            PaginableList<ProductIndexDto> paginableList = new PaginableList<ProductIndexDto>();
+            paginableList.Rows = rows.ToList();
+            paginableList.TotalRows = rows.Any() ? rows.FirstOrDefault().TotalRows : 0;
+            return paginableList;
+        }
+
+        private KeyValuePair<string, object>[] ParseIndexQueryString(IQueryCollection queryString)
+        {
+            List<KeyValuePair<string, object>> values = new List<KeyValuePair<string, object>>();
+            List<string> ignoredKeys = new List<string>() { "Length", "X-Requested-With", "_", "page", "__swhg", "sort", "sortdir" };
+
+            foreach (var key in queryString.Keys)
+            {
+
+                if (!string.IsNullOrEmpty(key) &&
+                    !string.IsNullOrEmpty(queryString[key]) &&
+                    !ignoredKeys.Contains(key))
+                {
+                    if (queryString[key] == "true" || queryString[key] == "false")
+                    {
+                        values.Add(new KeyValuePair<string, object>(key, queryString[key] == "true"));
+                        continue;
+                    }
+
+                    string[] format = new string[] { "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm:ss", "MM/dd/yyyy HH:mm", "dd/MM/yyyy", "MM/dd/yyyy" };
+                    DateTime auxDate;
+
+                    if (DateTime.TryParseExact(queryString[key].ToString(), format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out auxDate))
+                    {
+                        values.Add(new KeyValuePair<string, object>(key, auxDate));
+                        continue;
+                    }
+
+                    values.Add(new KeyValuePair<string, object>(key, queryString[key].ToString()));
+                }
+            }
+            return values.ToArray();
         }
 
         //GET: api/User/id

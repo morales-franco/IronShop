@@ -21,5 +21,7 @@ namespace IronShop.Api.Core.Dtos
 
         [Required, MaxLength(512)]
         public string Description { get; set; }
+
+        public string ImageFileName { get; set; }
     }
 }
