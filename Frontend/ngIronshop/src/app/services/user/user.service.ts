@@ -11,8 +11,6 @@ import { LoginGoogle } from '../../models/login-google.model';
 import { Profile } from '../../models/profile.model';
 import { IronToken } from '../../models/iron-token.model';
 import { Router } from '@angular/router';
-import { UserIndex } from '../../models/user.index.model';
-import { Observable } from 'rxjs';
 
 
 @Injectable({

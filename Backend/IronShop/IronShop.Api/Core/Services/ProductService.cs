@@ -1,8 +1,10 @@
 ﻿using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.Entities.Base;
 using IronShop.Api.Core.IServices;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace IronShop.Api.Core.Services
@@ -11,12 +13,15 @@ namespace IronShop.Api.Core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserService _userService;
+        private readonly IFileService _fileService;
 
         public ProductService(IUnitOfWork unitOfWork,
-                              IUserService userService)
+                              IUserService userService,
+                              IFileService fileService)
         {
             _unitOfWork = unitOfWork;
             _userService = userService;
+            _fileService = fileService;
         }
 
         public async Task Create(Product product)
@@ -59,6 +64,23 @@ namespace IronShop.Api.Core.Services
         {
             await AuditOperation(product);
             _unitOfWork.Products.Update(product);
+            await _unitOfWork.Commit();
+        }
+
+        public async Task UploadImage(int id, IFormFile file)
+        {
+            var productBD = await _unitOfWork.Products.GetById(id);
+            var image = await _fileService.DownloadAndSaveFromForm(file);
+
+            if (!image.Success)
+                throw new ValidationException("Error when try to update Image");
+
+            if (productBD.ImageFileName != null)
+                _fileService.DeleteFile(productBD.ImageFileName);
+
+            productBD.SetImage(image.FileName);
+
+            _unitOfWork.Products.Update(productBD);
             await _unitOfWork.Commit();
         }
     }

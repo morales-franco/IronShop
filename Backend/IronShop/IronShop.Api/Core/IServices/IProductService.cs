@@ -1,4 +1,5 @@
 ﻿using IronShop.Api.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace IronShop.Api.Core.IServices
         Task Update(Product product);
         Task Delete(Product product);
         Task Create(Product productEntity);
+        Task UploadImage(int id, IFormFile image);
     }
 }

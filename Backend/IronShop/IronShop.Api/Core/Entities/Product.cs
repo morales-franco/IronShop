@@ -11,7 +11,7 @@ namespace IronShop.Api.Core.Entities
         public decimal Price { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
-        public string ImageFileName { get; set; }
+        public string ImageFileName { get; private set; }
 
         public string AuditUserName { get; set; }
         public DateTime AuditDate { get;  set; }
@@ -42,5 +42,9 @@ namespace IronShop.Api.Core.Entities
             Deleted = true;
         }
 
+        public void SetImage(string fileName)
+        {
+            ImageFileName = fileName;
+        }
     }
 }

@@ -20,6 +20,8 @@ import { CommonModule } from '@angular/common';
 import { UsersComponent } from './users/users.component';
 import { ModalImageUploadComponent } from '../components/modal-image-upload/modal-image-upload.component';
 import { ProductIndexComponent } from './products/product-index/product-index.component';
+import { ProductCreateComponent } from './products/product-create/product-create.component';
+import { ProductEditComponent } from './products/product-edit/product-edit.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ProductIndexComponent } from './products/product-index/product-index.co
     ProfileComponent,
     UsersComponent,
     ModalImageUploadComponent,
-    ProductIndexComponent
+    ProductIndexComponent,
+    ProductCreateComponent,
+    ProductEditComponent
   ],
   imports:[
     SharedModule,

@@ -32,7 +32,6 @@ export class UsersComponent implements OnInit {
   }
 
   private onUploadPictureSuccess(user :any){
-    debugger;
     swal("Success", "Operation successfully.", "success");
     this.loadGrid();
   }

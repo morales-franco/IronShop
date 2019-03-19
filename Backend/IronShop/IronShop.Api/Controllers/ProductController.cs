@@ -1,6 +1,7 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -204,6 +205,30 @@ namespace IronShop.Api.Controllers
             return _mapper.Map<Product, ProductDto>(product);
         }
 
+        // PUT: api/product/image/{id}
+        [HttpPut("image/{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Image(int id)
+        {
+            if (!Request.Form.Files.Any())
+                return BadRequest("Image is required");
+
+            var validExtensions = new string[] { ".png", ".jpg", ".gif", ".jpeg" };
+
+            var imageFile = Request.Form.Files.FirstOrDefault();
+            var imageExtension = Path.GetExtension(imageFile.FileName);
+
+            if (!validExtensions.Any(e => e == imageExtension.ToLower()))
+                return BadRequest($"Format Image Not valid - valid Formats: { string.Join(",", validExtensions) }");
+
+            await _service.UploadImage(id, imageFile);
+            var user = await _service.GetById(id);
+
+            var product = _mapper.Map<ProductDto>(user);
+
+            return Ok(product);
+        }
 
     }
 }

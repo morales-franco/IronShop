@@ -11,6 +11,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { UsersComponent } from './users/users.component';
 import { ProductIndexComponent } from './products/product-index/product-index.component';
+import { ProductCreateComponent } from './products/product-create/product-create.component';
+import { ProductEditComponent } from './products/product-edit/product-edit.component';
 
 /*
 @FM:canActivateChild
@@ -64,9 +66,11 @@ const pagesRoutes: Routes = [
           { path: 'promesas', component: PromesasComponent, data: { title: 'Promesas' } },
           { path: 'rxjs', component: RxjsComponent, data: { title: 'RxJs - Observables' } },
 
-          { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
-          { path: 'users', component: UsersComponent, data: { title: 'Users' } },
-          { path: 'products', component:ProductIndexComponent, data: { title : 'Products' } },
+          { path: 'profile', component: ProfileComponent, data: { title: 'profile' } },
+          { path: 'users', component: UsersComponent, data: { title: 'users' } },
+          { path: 'products', component:ProductIndexComponent, data: { title : 'products' } },
+          { path: 'product/create', component: ProductCreateComponent, data: { title : 'Product' } },
+          { path: 'product/edit/:id', component: ProductEditComponent, data: { title : 'Product' } },
 
           { path: '', redirectTo: '/home', pathMatch: 'full' }
         ]
