@@ -71,9 +71,19 @@ export class ProductIndexComponent implements OnInit {
       return;
     }
 
-    console.log(title);
-    console.log(category);
     this.loadGrid(title, category);
+  }
+
+  delete(product: ProductIndex){
+    this.loading = true;
+    
+    this._productService.delete(product.productId)
+      .subscribe(r => {
+        swal("Success", "Product was deleted successfully!", "success");
+        this.pageNumber = 1;
+        this.loadGrid();
+      },
+      error => swal("Error", "Can not delete product!", "error"))
   }
 
   showModalUploadPicture(product: ProductIndex){

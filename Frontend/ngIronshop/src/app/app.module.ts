@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import localeEsAr from '@angular/common/locales/es-AR';
 
 //Modules
 import { AppComponent } from './app.component';
@@ -16,12 +18,16 @@ import { AppRoutingModule } from './app-routing.module';
 //Components
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
+
+
 /*
 @FM:
 Look at the module imports array. 
 Notice that the AppRoutingModule is last. Most importantly, it comes after the PageModule.
 AppRoutingModule: Siempre tiene que ir al final de las demas hojas de routeo
  */
+
+registerLocaleData(localeEsAr, 'es-AR');
 
 @NgModule({
   declarations: [

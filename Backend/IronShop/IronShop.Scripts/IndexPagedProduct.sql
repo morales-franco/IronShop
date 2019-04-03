@@ -27,7 +27,7 @@ BEGIN
 						 ,[Title]
 						 ,[ImageFileName]
 				   FROM [Product]
-				   WHERE 1 = 1 ';
+				   WHERE 1 = 1  AND Deleted = 0 ';
 
 	IF(NOT @title IS NULL)
 	BEGIN

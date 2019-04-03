@@ -22,7 +22,7 @@ namespace IronShop.Api.Core.Entities
 
         }
 
-        public Product(int? productId, string category, decimal price, string title, string description)
+        public Product(int? productId, string category, decimal price, string title, string description, string imageFileName = null)
         {
             Guard.Against.NullOrEmpty(category, nameof(category));
             Guard.Against.NullOrEmpty(description, nameof(description));
@@ -35,6 +35,7 @@ namespace IronShop.Api.Core.Entities
             Title = title;
             Description = description;
             Deleted = false;
+            ImageFileName = imageFileName;
         }
 
         public void MarkAsDeleted()

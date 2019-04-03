@@ -172,7 +172,7 @@ namespace IronShop.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userToChange = new Product(product.ProductId, product.Category, product.Price, product.Title, product.Description);
+            var userToChange = new Product(product.ProductId, product.Category, product.Price, product.Title, product.Description, product.ImageFileName);
             await _service.Update(userToChange);
 
             return NoContent();

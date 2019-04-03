@@ -23,6 +23,9 @@ import { ProductIndexComponent } from './products/product-index/product-index.co
 import { ProductCreateComponent } from './products/product-create/product-create.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
 
+//https://github.com/cesarrew/ng2-currency-mask
+import { CurrencyMaskModule } from "ng2-currency-mask";
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -46,7 +49,8 @@ import { ProductEditComponent } from './products/product-edit/product-edit.compo
     FormsModule,
     ChartsModule,
     PipesModule,
-    CommonModule
+    CommonModule,
+    CurrencyMaskModule
   ],
   exports: [
     HomeComponent,
