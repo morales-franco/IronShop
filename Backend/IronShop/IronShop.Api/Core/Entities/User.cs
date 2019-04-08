@@ -19,11 +19,13 @@ namespace IronShop.Api.Core.Entities
 
         public string Password { get; private set; }
 
-        public string Role { get; private set; }
-
         public string ImageFileName { get; private set; }
 
         public bool GoogleAuth { get; private set; }
+
+        public int RoleId { get; private set; }
+
+        public Role Role { get; private set; }
 
         public User()
         {
@@ -31,7 +33,7 @@ namespace IronShop.Api.Core.Entities
         }
 
         //Automapper call this method
-        public User(string fullName, string email, string password, string role = null, bool googleUser = false)
+        public User(string fullName, string email, string password, eRole role = eRole.User, bool googleUser = false)
         {
             Guard.Against.NullOrEmpty(fullName, nameof(fullName));
             Guard.Against.NullOrEmpty(email, nameof(email));
@@ -40,11 +42,11 @@ namespace IronShop.Api.Core.Entities
             FullName = fullName;
             Email = email;
             Password = password;
-            Role = role?? AuthConstants.Role_User;
+            RoleId = (int)role;
             GoogleAuth = googleUser;
         }
 
-        public User(int userId, string fullName, string email, string role= null)
+        public User(int userId, string fullName, string email, eRole role = eRole.User)
         {
             Guard.Against.NullOrEmpty(fullName, nameof(fullName));
             Guard.Against.NullOrEmpty(email, nameof(email));
@@ -52,7 +54,7 @@ namespace IronShop.Api.Core.Entities
             UserId = userId;
             FullName = fullName;
             Email = email;
-            Role = role ?? AuthConstants.Role_User;
+            RoleId = (int)role;
         }
 
         public User(int userId, string password)
@@ -65,11 +67,6 @@ namespace IronShop.Api.Core.Entities
         {
             Email = email;
             Password = password;
-        }
-
-        public void ChangeRole(string role)
-        {
-            Role = role;
         }
 
         public void EncryptPassword()
@@ -87,11 +84,11 @@ namespace IronShop.Api.Core.Entities
             Password = hashPassword;
         }
 
-        public void Modify(string fullName, string email, string role)
+        public void Modify(string fullName, string email, eRole role = eRole.User)
         {
             FullName = fullName;
             Email = email;
-            Role = role;
+            RoleId = (int)role;
         }
 
         internal bool IsMyPassword(string password)

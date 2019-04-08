@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class ProfileComponent implements OnInit {
 
   private userId : number;
+  private roleId : number;
   userFullName : string;
   userEmail : string;
   userRole : string;
@@ -29,6 +30,7 @@ export class ProfileComponent implements OnInit {
     this.userFullName = this._userService.currentUser.fullName;
     this.userEmail = this._userService.currentUser.email;
     this.userRole = this._userService.currentUser.role;
+    this.roleId = this._userService.currentUser.roleId;
     this.googleAuth = this._userService.currentUser.googleAuth;
     this.fileNamePicture = this._userService.currentUser.imageFileName;
   }
@@ -44,7 +46,7 @@ export class ProfileComponent implements OnInit {
       this.userId,
       this.userFullName, 
       this.userEmail,
-      this.userRole
+      this.roleId
     );
 
     this._userService.updateProfile(userModified)

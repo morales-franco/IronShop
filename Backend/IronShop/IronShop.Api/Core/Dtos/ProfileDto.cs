@@ -14,9 +14,11 @@ namespace IronShop.Api.Core.Dtos
         public string FullName { get; set; }
         [Required, MaxLength(256), EmailAddress]
         public string Email { get; set; }
+        public int RoleId { get; set; }
         public string Role { get; set; }
         public string ImageFileName { get; set; }
         public bool GoogleAuth { get; set; }
+
 
     }
 }

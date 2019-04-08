@@ -36,7 +36,7 @@ namespace IronShop.Api.Core.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtCustomClaims.Role, user.Role)
+                new Claim(JwtCustomClaims.Role, user.RoleId.ToString())
             };
 
             //Secret key que se utiliza para encriptar el token

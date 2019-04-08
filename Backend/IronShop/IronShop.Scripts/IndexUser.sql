@@ -74,6 +74,9 @@ END
 
 GO
 
+/*
+ERROR! THis migration is executed before add columns ImageFileName, GoogleAuth --> Migration Error!
+
 IF EXISTS (SELECT 1 FROM sysobjects o, sysusers u WHERE o.uid=u.uid AND o.name = 'IndexUser' AND u.name = 'dbo' AND o.type = 'P')
 BEGIN
 	drop procedure IndexUser
@@ -96,3 +99,4 @@ BEGIN
 		  (@email IS NULL OR  Email LIKE '%' + @email + '%') AND
 		  (@role IS NULL OR  Role LIKE '%' + @role + '%')
 END
+*/

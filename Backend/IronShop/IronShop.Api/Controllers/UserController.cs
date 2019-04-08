@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IronShop.Api.Core.Common;
 using IronShop.Api.Core.Dtos;
 using IronShop.Api.Core.Dtos.Index;
 using IronShop.Api.Core.Entities;
@@ -225,7 +226,7 @@ namespace IronShop.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userToChange = new User(user.UserId, user.FullName, user.Email, user.Role);
+            var userToChange = new User(user.UserId, user.FullName, user.Email, (eRole)user.RoleId);
             await _service.UpdateProfile(userToChange);
 
             return NoContent();

@@ -34,9 +34,7 @@ namespace IronShop.Api.Data.EntityConfigurations
                 .HasMaxLength(256);
 
             builder
-               .Property(u => u.Role)
-               .IsRequired()
-               .HasMaxLength(50);
+               .Property(u => u.RoleId);
 
             builder
                 .Property(u => u.Password)

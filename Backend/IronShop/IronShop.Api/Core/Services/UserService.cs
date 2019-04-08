@@ -98,7 +98,7 @@ namespace IronShop.Api.Core.Services
                 if (!(await IsEmailUnique(user.Email)))
                     throw new ValidationException("Email address is already registered");
 
-            userBd.Modify(user.FullName, user.Email, user.Role);
+            userBd.Modify(user.FullName, user.Email, (eRole)user.RoleId);
 
             _unitOfWork.Users.Update(userBd);
             await _unitOfWork.Commit();
@@ -117,7 +117,7 @@ namespace IronShop.Api.Core.Services
                     throw new ValidationException("Email address is already registered");
             }
 
-            userBd.Modify(user.FullName, user.Email, user.Role);
+            userBd.Modify(user.FullName, user.Email, (eRole)user.RoleId);
 
             _unitOfWork.Users.Update(userBd);
             await _unitOfWork.Commit();
@@ -167,7 +167,7 @@ namespace IronShop.Api.Core.Services
             else
             {
                 var profilePicture = await _fileService.DownloadAndSaveFromUrl(userValidPayload.Picture);
-                userBd = new User(userValidPayload.Name, userValidPayload.Email, AuthConstants.UserGoogle_FakePassword, AuthConstants.Role_User, true);
+                userBd = new User(userValidPayload.Name, userValidPayload.Email, AuthConstants.UserGoogle_FakePassword, eRole.User, true);
 
                 if (profilePicture.Success)
                     userBd.SetProfilePicture(profilePicture.FileName);

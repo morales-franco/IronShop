@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore;
+﻿using IronShop.Api.Data;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
 using System.IO;
@@ -22,11 +24,25 @@ namespace IronShop.Api
                 .ReadFrom.Configuration(Configuration)
                 .CreateLogger();
 
-            CreateWebHostBuilder(args).Build().Run();
+            var host = CreateWebHostBuilder(args).Build();
+            RunSeeding(host);
+            host.Run();
+
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
+
+        private static void RunSeeding(IWebHost host)
+        {
+            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var seeder = scope.ServiceProvider.GetService<IronSeeder>();
+                seeder.SeedAsync().Wait();
+            }
+        }
     }
 }

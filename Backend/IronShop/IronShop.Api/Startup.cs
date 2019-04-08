@@ -75,6 +75,7 @@ namespace IronShop.Api
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddTransient<IronSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

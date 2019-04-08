@@ -12,6 +12,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20190408145948_add-role-permission.cs" />
+    <Compile Remove="Data\Migrations\20190408145948_add-role-permission.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190408150248_add-role-permission.cs" />
+    <Compile Remove="Data\Migrations\20190408150248_add-role-permission.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190408150626_add-role-permission.cs" />
+    <Compile Remove="Data\Migrations\20190408150626_add-role-permission.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190408152546_add-role-permission.cs" />
+    <Compile Remove="Data\Migrations\20190408152546_add-role-permission.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190408155407_add-role-permission.cs" />
+    <Compile Remove="Data\Migrations\20190408155407_add-role-permission.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="log.txt" />
   </ItemGroup>
 

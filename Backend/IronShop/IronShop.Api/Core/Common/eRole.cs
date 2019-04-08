@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace IronShop.Api.Core.Common
 {
-    public class AuthConstants
+    public enum eRole
     {
-        public const string UserGoogle_FakePassword = "##Google_@AuTh@1#";
+        Admin = 1,
+        User = 2
     }
 }

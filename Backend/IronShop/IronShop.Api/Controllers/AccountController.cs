@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
+using IronShop.Api.Core.Common;
 using IronShop.Api.Core.Dtos;
 using IronShop.Api.Core.Entities;
 using IronShop.Api.Core.Entities.Base;
@@ -95,7 +96,7 @@ namespace IronShop.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var userEntity = new User(user.FullName, user.Email, user.Password, user.Role);
+                var userEntity = new User(user.FullName, user.Email, user.Password, eRole.User);
                 await _service.Register(userEntity);
 
                 return Created("", null);

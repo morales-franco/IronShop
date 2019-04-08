@@ -133,7 +133,7 @@ export class UsersComponent implements OnInit {
         user.userId,
         user.fullName,
         user.email,
-        user.role
+        user.roleId
       );
 
       this._userService.updateProfile(profile)
