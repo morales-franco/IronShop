@@ -167,7 +167,7 @@ namespace IronShop.Api.Core.Services
             else
             {
                 var profilePicture = await _fileService.DownloadAndSaveFromUrl(userValidPayload.Picture);
-                userBd = new User(userValidPayload.Name, userValidPayload.Email, AuthConstants.UserGoogle_FakePassword, eRole.User, true);
+                userBd = new User(userValidPayload.Name, userValidPayload.Email, AuthConstants.UserGoogle_FakePassword, eRole.Employee, true);
 
                 if (profilePicture.Success)
                     userBd.SetProfilePicture(profilePicture.FileName);

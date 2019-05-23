@@ -26,7 +26,7 @@ BEGIN
 						 ,[Price]
 						 ,[Title]
 						 ,[ImageFileName]
-				   FROM [Product]
+				   FROM [Products]
 				   WHERE 1 = 1  AND Deleted = 0 ';
 
 	IF(NOT @title IS NULL)

@@ -63,7 +63,26 @@ namespace IronShop.Api.Core.Services
 
         private ProfileDto MapUserToProfile(User user)
         {
-            return _mapper.Map<ProfileDto>(user);
+            var profile = _mapper.Map<ProfileDto>(user);
+
+            foreach (var permission in user.Role.RolePermissionMenuItem)
+            {
+                PermissionDto permissionDto = new PermissionDto()
+                {
+                    Display = permission.PermissionMenuItem.Display,
+                    DisplayName = permission.PermissionMenuItem.DisplayName,
+                    Url = permission.PermissionMenuItem.Url,
+                    PermissionId = permission.PermissionMenuItem.PermissionMenuItemId,
+                    MenuId = permission.PermissionMenuItem.Menu.MenuId,
+                    MenuIcon = permission.PermissionMenuItem.Menu.Icon,
+                    MenuDisplayName = permission.PermissionMenuItem.Menu.DisplayName
+                };
+
+                profile.Permissions.Add(permissionDto);
+            }
+
+            return profile;
+
         }
     }
 }

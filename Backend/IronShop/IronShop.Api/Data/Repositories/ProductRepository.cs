@@ -37,19 +37,19 @@ namespace IronShop.Api.Data.Repositories
 
         public void Add(Product product)
         {
-            _context.Product.Add(product);
+            _context.Products.Add(product);
         }
 
         public async Task<IEnumerable<Product>> GetAll()
         {
-            return await _context.Product
+            return await _context.Products
                 .Where(p => !p.Deleted)
                 .ToListAsync();
         }
 
         public async Task<Product> GetById(int id)
         {
-            return await _context.Product.FirstOrDefaultAsync(p => !p.Deleted && p.ProductId == id);
+            return await _context.Products.FirstOrDefaultAsync(p => !p.Deleted && p.ProductId == id);
         }
 
         public void Update(Product product)

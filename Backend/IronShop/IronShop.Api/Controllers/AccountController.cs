@@ -96,7 +96,7 @@ namespace IronShop.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var userEntity = new User(user.FullName, user.Email, user.Password, eRole.User);
+                var userEntity = new User(user.FullName, user.Email, user.Password, eRole.Employee);
                 await _service.Register(userEntity);
 
                 return Created("", null);

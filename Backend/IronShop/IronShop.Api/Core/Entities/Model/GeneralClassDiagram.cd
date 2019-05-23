@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="IronShop.Api.Core.Entities.Order">
+    <Position X="1.25" Y="0.5" Width="2.5" />
+    <AssociationLine Name="User" Type="IronShop.Api.Core.Entities.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.12" Y="0.675" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>GAABAAIAAAAACAAAAAAAAAgAgAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Entities\Order.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="IronShop.Api.Core.Entities.OrderItem">
+    <Position X="6.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>MAECAAAAAAAAAAAAAAAAAAAAAAQAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Core\Entities\OrderItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="IronShop.Api.Core.Entities.Permission">
+    <Position X="8.25" Y="7.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAEQAAAFAAAAAQACAAAAAEAAAA=</HashCode>
+      <FileName>Core\Entities\Permission.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IronShop.Api.Core.Entities.Product" BaseTypeListCollapsed="true">
+    <Position X="10" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAQAgBEAAAAAAEAECAAAQACAAAAAAAAAACAA=</HashCode>
+      <FileName>Core\Entities\Product.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IronShop.Api.Core.Entities.RolePermission">
+    <Position X="4.25" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAEAAEAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Entities\RolePermission.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Permission" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="IronShop.Api.Core.Entities.User">
+    <Position X="0.75" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABgAIAIAACAAgIAAEABAAAgCgAAAAAACAAAAAAAAAAI=</HashCode>
+      <FileName>Core\Entities\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Role" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="IronShop.Api.Core.Entities.Role">
+    <Position X="3.75" Y="5" Width="2.75" />
+    <AssociationLine Name="RolePermission" Type="IronShop.Api.Core.Entities.RolePermission">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.544" Y="0.381" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAACIAAAAgAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Entities\Role.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="RolePermission" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

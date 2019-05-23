@@ -19,11 +19,11 @@
 
                 <li *ngFor="let menu of _sidebarService.menu">
                     <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
-                        <i [class]="menu.icon"></i><span class="hide-menu">{{ menu.title }} <span class="label label-rouded label-themecolor pull-right"> {{ menu.submenu.length }}</span></span>
+                        <i [class]="menu.icon"></i><span class="hide-menu">{{ menu.displayName }} <span class="label label-rouded label-themecolor pull-right"> {{ menu.submenues.length }}</span></span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
-                        <li *ngFor="let submenu of menu.submenu">
-                            <a [routerLink]="[ submenu.url ]" routerLinkActive="active">{{ submenu.title }} </a>
+                        <li *ngFor="let submenu of menu.submenues">
+                            <a [routerLink]="[ submenu.url ]" routerLinkActive="active">{{ submenu.displayName }} </a>
                         </li>
                     </ul>
                 </li>

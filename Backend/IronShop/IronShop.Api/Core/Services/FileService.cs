@@ -17,14 +17,11 @@ namespace IronShop.Api.Core.Services
     public class FileService : IFileService
     {
         private readonly IConfiguration _configuration;
-        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger _logger = Log.ForContext<FileService>();
 
-        public FileService(IConfiguration configuration,
-            IHostingEnvironment hostingEnvironment)
+        public FileService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IronFile> DownloadAndSaveFromUrl(string url)
@@ -51,7 +48,7 @@ namespace IronShop.Api.Core.Services
 
                     string fileName = Guid.NewGuid().ToString() + fileExtension;
 
-                    var pathAbsolute = Path.Combine(_hostingEnvironment.WebRootPath, pathFolderStorage, fileName);
+                    var pathAbsolute = Path.Combine(pathFolderStorage, fileName);
                     using (FileStream fs = System.IO.File.Create(pathAbsolute))
                     {
                         await fs.WriteAsync(fileArray, 0, fileArray.Length);
@@ -79,7 +76,8 @@ namespace IronShop.Api.Core.Services
                 var pathFolderStorage = _configuration["FolderStorage"];
                 var newFile = Guid.NewGuid().ToString() + fileExtension;
 
-                var pathAbsolute = Path.Combine(_hostingEnvironment.WebRootPath, pathFolderStorage, newFile);
+                var pathAbsolute = Path.Combine(pathFolderStorage, newFile);
+
                 byte[] arrayFile;
 
                 using (var memoryStream = new MemoryStream())
@@ -110,7 +108,7 @@ namespace IronShop.Api.Core.Services
             try
             {
                 var pathFileStorage = _configuration["FolderStorage"];
-                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, pathFileStorage, fileName);
+                var filePath = Path.Combine( pathFileStorage, fileName);
 
                 if (File.Exists(filePath))
                     File.Delete(filePath);
@@ -127,7 +125,7 @@ namespace IronShop.Api.Core.Services
             try
             {
                 var pathFolderStorage = _configuration["FolderStorage"];
-                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, pathFolderStorage, fileName);
+                var filePath = Path.Combine(pathFolderStorage, fileName);
 
                 using (MemoryStream fileStream = new MemoryStream())
                 {

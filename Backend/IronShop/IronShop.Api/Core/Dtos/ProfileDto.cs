@@ -18,7 +18,12 @@ namespace IronShop.Api.Core.Dtos
         public string Role { get; set; }
         public string ImageFileName { get; set; }
         public bool GoogleAuth { get; set; }
+        public List<PermissionDto> Permissions { get; set; }
 
+        public ProfileDto()
+        {
+            Permissions = new List<PermissionDto>();
+        }
 
     }
 }

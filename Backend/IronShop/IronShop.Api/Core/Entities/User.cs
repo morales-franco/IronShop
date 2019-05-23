@@ -33,7 +33,7 @@ namespace IronShop.Api.Core.Entities
         }
 
         //Automapper call this method
-        public User(string fullName, string email, string password, eRole role = eRole.User, bool googleUser = false)
+        public User(string fullName, string email, string password, eRole role = eRole.Employee, bool googleUser = false)
         {
             Guard.Against.NullOrEmpty(fullName, nameof(fullName));
             Guard.Against.NullOrEmpty(email, nameof(email));
@@ -46,7 +46,7 @@ namespace IronShop.Api.Core.Entities
             GoogleAuth = googleUser;
         }
 
-        public User(int userId, string fullName, string email, eRole role = eRole.User)
+        public User(int userId, string fullName, string email, eRole role = eRole.Employee)
         {
             Guard.Against.NullOrEmpty(fullName, nameof(fullName));
             Guard.Against.NullOrEmpty(email, nameof(email));
@@ -84,7 +84,7 @@ namespace IronShop.Api.Core.Entities
             Password = hashPassword;
         }
 
-        public void Modify(string fullName, string email, eRole role = eRole.User)
+        public void Modify(string fullName, string email, eRole role = eRole.Employee)
         {
             FullName = fullName;
             Email = email;

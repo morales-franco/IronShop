@@ -22,6 +22,12 @@
     <Compile Remove="Data\Migrations\20190408152546_add-role-permission.Designer.cs" />
     <Compile Remove="Data\Migrations\20190408155407_add-role-permission.cs" />
     <Compile Remove="Data\Migrations\20190408155407_add-role-permission.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190522193254_membership.cs" />
+    <Compile Remove="Data\Migrations\20190522193254_membership.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190522200022_no-identity-role-menu.cs" />
+    <Compile Remove="Data\Migrations\20190522200022_no-identity-role-menu.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190522201351_membership.cs" />
+    <Compile Remove="Data\Migrations\20190522201351_membership.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

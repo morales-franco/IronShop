@@ -16,7 +16,8 @@ namespace IronShop.Api.AppStart
             CreateMap<User, UserDto>()
                 .ReverseMap();
 
-            CreateMap<User, ProfileDto>();
+            CreateMap<User, ProfileDto>()
+                .ForMember(d => d.Role, o => o.MapFrom(s => s.Role.Description));
 
             CreateMap<User, UserIndexDto>();
 

@@ -8,31 +8,31 @@ using System.Threading.Tasks;
 
 namespace IronShop.Api.Data.EntityConfigurations
 {
-    public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
+    public class PermissionMenuItemConfiguration : IEntityTypeConfiguration<PermissionMenuItem>
     {
-        public void Configure(EntityTypeBuilder<Permission> builder)
+        public void Configure(EntityTypeBuilder<PermissionMenuItem> builder)
         {
             builder
-                .HasKey(p => p.PermissionId);
+                .HasKey(p => p.PermissionMenuItemId);
 
             builder
-                .Property(p => p.PermissionId)
+                .Property(p => p.PermissionMenuItemId)
                 .IsRequired();
 
             builder
-               .Property(p => p.Title)
-               .IsRequired()
+               .Property(p => p.DisplayName)
                .HasMaxLength(100);
 
             builder
-               .Property(p => p.Icon)
-               .IsRequired()
-               .HasMaxLength(50);
+               .Property(p => p.Display)
+               .IsRequired();
 
             builder
                .Property(p => p.Url)
                .IsRequired()
                .HasMaxLength(50);
+
+
 
 
         }

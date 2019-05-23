@@ -22,8 +22,8 @@ BEGIN
 	DECLARE @select VARCHAR(MAX)='';
 	DECLARE @orderBy VARCHAR(100)='';
 
-	SET @select = 'SELECT [UserId], FullName, Email, [Role], ImageFileName, GoogleAuth
-				   FROM [User]
+	SET @select = 'SELECT U.[UserId], U.FullName, U.Email, U.RoleId, R.[Description] AS [Role], U.ImageFileName, U.GoogleAuth
+				   FROM [Users] U INNER JOIN [Roles] R ON (R.RoleId = U.RoleId)
 				   WHERE 1 = 1 ';
 
 	IF(NOT @fullName IS NULL)
@@ -38,7 +38,7 @@ BEGIN
 
 	IF(NOT @role IS NULL)
 	BEGIN
-		SET @select = @select + 'AND [Role] LIKE ''%' + @role + '%'' ';
+		SET @select = @select + 'AND R.Description LIKE ''%' + @role + '%'' ';
 	END	
 
 	IF(NOT @sort IS NULL)
@@ -60,7 +60,7 @@ BEGIN
 				(
 					SELECT COUNT([UserId]) AS TotalRows FROM DataRows
 				)
-				SELECT [UserId], FullName, Email, [Role], ImageFileName, GoogleAuth, [TotalRows]
+				SELECT [UserId], FullName, Email, RoleId, [Role], ImageFileName, GoogleAuth, [TotalRows]
 				FROM [DataRows] CROSS JOIN DataTotalCount 
 				ORDER BY ' + @orderBy +
 			  ' OFFSET ('+ CONVERT(VARCHAR,@pageNumber)  +' - 1) * ' +CONVERT(VARCHAR, @pageSize) +' ROWS
@@ -93,10 +93,11 @@ CREATE PROCEDURE IndexUser
 )
 AS
 BEGIN
-	SELECT [UserId], FullName, Email, [Role], ImageFileName, GoogleAuth
-	FROM [User]
+	SELECT U.[UserId], U.FullName, U.Email, U.RoleId,R.[Description] AS [Role], U.ImageFileName, U.GoogleAuth
+	FROM [Users] U INNER JOIN [Roles] R ON (R.RoleId = U.RoleId)
 	WHERE (@fullName IS NULL OR  FullName LIKE '%' + @fullName + '%') AND
 		  (@email IS NULL OR  Email LIKE '%' + @email + '%') AND
-		  (@role IS NULL OR  Role LIKE '%' + @role + '%')
+		  (@role IS NULL OR  R.[Description] LIKE '%' + @role + '%')
 END
 */
+

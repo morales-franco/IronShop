@@ -28,18 +28,18 @@ namespace IronShop.Api.Data.Repositories
 
         public void Add(User user)
         {
-            _context.User.Add(user);
+            _context.Users.Add(user);
         }
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.User.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
         public async Task<PaginableList<User>> GetPagedList(PageParameters<User> pageParameter)
         {
             PaginableList<User> dataSource = new PaginableList<User>();
 
-            IQueryable<User> query = _context.User;
+            IQueryable<User> query = _context.Users;
 
             if (pageParameter.Filter != null)
                 query = query.Where(pageParameter.Filter);
@@ -77,12 +77,17 @@ namespace IronShop.Api.Data.Repositories
 
         public async Task<User> GetByEmail(string email)
         {
-            return await _context.User.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+            return await _context.Users
+                .Include(u => u.Role)
+                .ThenInclude(r => r.RolePermissionMenuItem)
+                .ThenInclude(rpm => rpm.PermissionMenuItem)
+                .ThenInclude(pm => pm.Menu)
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
         }
 
         public async Task<User> GetById(int id)
         {
-            return await _context.User.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public void Update(User user)

@@ -1,4 +1,6 @@
 export enum eRole{
-    Admin = 1,
-    User = 2
+    Admin = 7,
+    ProductManager = 8,
+    SalesManager = 9,
+    Employee = 10
 }

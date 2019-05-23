@@ -19,12 +19,12 @@ namespace IronShop.Api.Data.Repositories
 
         public void Add(Order order)
         {
-            _context.Order.Add(order);
+            _context.Orders.Add(order);
         }
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            return await _context.Order
+            return await _context.Orders
                 .Include(m => m.User)
                 .Include("Items.Product")
                 .ToListAsync();
@@ -32,7 +32,7 @@ namespace IronShop.Api.Data.Repositories
 
         public async Task<Order> GetById(int id)
         {
-            return await _context.Order
+            return await _context.Orders
                 .Include(m => m.User)
                 .Include(m => m.Items.Select(i => i.Product))
                 .FirstOrDefaultAsync(o => o.OrderId == id);
@@ -42,9 +42,9 @@ namespace IronShop.Api.Data.Repositories
         {
             long maxOrderNumber = 0;
 
-            if (await _context.Order.AnyAsync())
+            if (await _context.Orders.AnyAsync())
             {
-                maxOrderNumber = await _context.Order.MaxAsync(o => o.OrderNumber);
+                maxOrderNumber = await _context.Orders.MaxAsync(o => o.OrderNumber);
             }
 
             return maxOrderNumber;

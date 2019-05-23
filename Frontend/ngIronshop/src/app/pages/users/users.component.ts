@@ -4,6 +4,8 @@ import { UserService } from "../../services/user/user.service";
 import swal from "sweetalert";
 import { Profile } from '../../models/profile.model';
 import { ModalImageUploadService } from '../../components/modal-image-upload/modal-image-upload.service';
+import { Role } from '../../models/role';
+import { eRole } from '../../models/eRole';
 
 @Component({
   selector: "app-users",
@@ -12,6 +14,7 @@ import { ModalImageUploadService } from '../../components/modal-image-upload/mod
 })
 export class UsersComponent implements OnInit {
   users: UserIndex[] = [];
+  roles: Role[] = [];
   totalRows: number = 0;
   pageNumber: number = 1;
   rowsPerPage: number = 5;
@@ -22,6 +25,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.loadGrid();
+    this.loadRoles();
 
     this._modalImageUploadService.uploadEvent.subscribe(
       r => this.onUploadPictureSuccess(r),
@@ -29,6 +33,13 @@ export class UsersComponent implements OnInit {
         swal("Error", "Internal Error, the picture was not updated.", "error");
       });
     
+  }
+
+  private loadRoles(){
+    this.roles.push(new Role(eRole.Admin,"Admin"));
+    this.roles.push(new Role(eRole.ProductManager,"Product Manager"));
+    this.roles.push(new Role(eRole.SalesManager,"Sales Manager"));
+    this.roles.push(new Role(eRole.Employee,"Employee"));
   }
 
   private onUploadPictureSuccess(user :any){

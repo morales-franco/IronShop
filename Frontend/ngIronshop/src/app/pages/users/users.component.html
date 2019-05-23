@@ -48,9 +48,8 @@
                             <td>{{user.email}}</td>
                             <td>{{user.fullName}}</td>
                             <td>
-                                <select class="form-control" [(ngModel)]="user.role">
-                                    <option value="ADMIN">Admin</option>
-                                    <option value="USER">User</option>
+                                <select class="form-control" [(ngModel)]="user.roleId">
+                                    <option  *ngFor="let role of this.roles" [value]="role.roleId">{{ role.description }}</option>
                                 </select>
                             </td>
                             <td>

@@ -20,17 +20,17 @@ namespace IronShop.Api.Data
             //Verificar si existe BD
             _context.Database.EnsureCreated();
 
-            if (!_context.Role.Any())
+            if (!_context.Roles.Any())
             {
-                _context.Role.AddRange(
+                _context.Roles.AddRange(
                        GetPreconfiguredRoles());
 
                 await _context.SaveChangesAsync();
             }
 
-            if (!_context.User.Any())
+            if (!_context.Users.Any())
             {
-                _context.User.AddRange(
+                _context.Users.AddRange(
                        GetPreconfiguredUsers());
 
                 await _context.SaveChangesAsync();
@@ -45,11 +45,19 @@ namespace IronShop.Api.Data
             {
                     new Role()
                     {
-                        Description = "Administrator"
+                        Description = "ADMIN"
                     },
                     new Role()
                     {
-                        Description = "User"
+                        Description = "PRODUCT_MANAGER"
+                    },
+                    new Role()
+                    {
+                        Description = "SALES_MANAGER"
+                    },
+                    new Role()
+                    {
+                        Description = "EMPLOYEE"
                     }
             };
         }
@@ -58,9 +66,10 @@ namespace IronShop.Api.Data
         {
             return new List<User>
             {
-                new User("Administrator", "admin@fmoralesdev.com","Dfo0NCB4P6Lxfs8MPwFNzYThlMxSEd/uw0cd7ZrH1z4=", Core.Common.eRole.Admin),
-                new User("User 1", "user1@fmoralesdev.com","Dfo0NCB4P6Lxfs8MPwFNzYThlMxSEd/uw0cd7ZrH1z4=", Core.Common.eRole.User),
-                new User("User 2", "user2@fmoralesdev.com","Dfo0NCB4P6Lxfs8MPwFNzYThlMxSEd/uw0cd7ZrH1z4=", Core.Common.eRole.User),
+                new User("Admin", "admin@fmoralesdev.com","Dfo0NCB4P6Lxfs8MPwFNzYThlMxSEd/uw0cd7ZrH1z4=", Core.Common.eRole.Admin),
+                new User("Employee", "employee@fmoralesdev.com","Dfo0NCB4P6Lxfs8MPwFNzYThlMxSEd/uw0cd7ZrH1z4=", Core.Common.eRole.Employee),
+                new User("Product Manager", "productmanager@fmoralesdev.com","Dfo0NCB4P6Lxfs8MPwFNzYThlMxSEd/uw0cd7ZrH1z4=", Core.Common.eRole.ProductManager),
+                new User("Sales Manager", "salesmanager@fmoralesdev.com","Dfo0NCB4P6Lxfs8MPwFNzYThlMxSEd/uw0cd7ZrH1z4=", Core.Common.eRole.SalesManager)
             };
         }
     }
