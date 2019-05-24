@@ -1,4 +1,5 @@
 import { Permission } from "./permission.model";
+import { Menu } from "./menu.model";
 
 export class Profile{
     constructor(
@@ -9,8 +10,10 @@ export class Profile{
         public role: string = null,
         public imageFileName: string = null,
         public googleAuth: boolean=false,
-        public permissions: Array<Permission> = null
+        public permissions: Array<Permission> = null,
+        public menue: Array<Menu> = null
     ){
         permissions = Array<Permission>();
+        menue = Array<Menu>();
     }
 }

@@ -6,8 +6,10 @@ import { UserService } from '../services/user/user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate, CanActivateChild {
-  
+export class AuthenticationGuard implements CanActivate, CanActivateChild {
+  /*
+    Verify that the user is authenticated! 
+  */
 
   constructor(private _userService : UserService,
     private _route: Router){
@@ -16,7 +18,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     if(!this._userService.existSessionActive())
     {
-      this._route.navigate(['/login'])
+      this._userService.logout();
       return false;
     }
     return true;

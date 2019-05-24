@@ -25,6 +25,8 @@ import { ProductEditComponent } from './products/product-edit/product-edit.compo
 
 //https://github.com/cesarrew/ng2-currency-mask
 import { CurrencyMaskModule } from "ng2-currency-mask";
+import { OrdersComponent } from './store/orders/orders.component';
+import { PurchaseComponent } from './store/purchase/purchase.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
     ModalImageUploadComponent,
     ProductIndexComponent,
     ProductCreateComponent,
-    ProductEditComponent
+    ProductEditComponent,
+    OrdersComponent,
+    PurchaseComponent
   ],
   imports:[
     SharedModule,

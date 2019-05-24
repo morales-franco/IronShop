@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
@@ -25,7 +24,7 @@ namespace IronShop.Api.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    [Authorize]
+    [Authorize] // Verify that the request has a valid token
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
@@ -47,26 +46,23 @@ namespace IronShop.Api.Controllers
 
         //TODO: Get all 
         // GET: api/User/GetAll
+        /*
+        * The JWT middleware in ASP.NET Core knows how to interpret a “roles” claim inside your JWT payload, 
+        * and will add the appropriate claims to the ClaimsIdentity. 
+        * This makes using the [Authorize] attribute with Roles very easy.
+        */
+        [Authorize(Roles = "7")] //7 is admin               
         [HttpGet("GetAll")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<UserIndexDto>>> GetAll()
         {
-            try
-            {
-                _logger.Debug("Get All!");
-                throw new Exception("Great Error!");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Fake Error Get All");
-            }
-
             var users = await _service.GetAll();
             return MapEntityToIndex(users);
         }
 
         //TODO: Get all 
         // GET: api/User/GetAllSP
+        [Authorize(policy: "RequireAdministratorRole")] // Use a Policity to check the admin Role (7)
         [HttpGet("GetAllSP")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<UserIndexDto>>> GetAllSP()
@@ -78,6 +74,7 @@ namespace IronShop.Api.Controllers
 
         //TODO: Get all Paging with E.F pure (using expression's)
         // GET: api/User/GetAllPaged
+        [Authorize(policy: "RequireAdministratorRole")]
         [HttpGet("GetAllPaged")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAllPaged(int? pageSize, int? pageNumber, string sort = null, string dir = null, string fullName = null, string email = null, string role = null)
@@ -88,10 +85,15 @@ namespace IronShop.Api.Controllers
 
         //TODO: Get all Paging with SP
         // GET: api/User/GetAllPagedSP
+        [Authorize(policy: "RequireAdministratorRole")]
         [HttpGet("GetAllPagedSP")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<PaginableList<UserIndexDto>>> GetAllPagedSP()
         {
+            var currentClaims = User.Claims.ToList();
+
+            /*--------------------------*/
+
             var procedureName = "IndexPaged" + typeof(User).Name;
             var rows = await _service.GetList<UserIndexDto>(procedureName, ParseIndexQueryString(Request.Query));
 
@@ -164,6 +166,7 @@ namespace IronShop.Api.Controllers
 
 
         // GET: api/User/GetByEmail/test@test.com.ar
+        [Authorize(policy: "RequireAdministratorRole")]
         [HttpGet("GetByEmail/{email}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -181,6 +184,7 @@ namespace IronShop.Api.Controllers
         }
 
         //GET: api/User/id
+        [Authorize(policy: "RequireAdministratorRole")]
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -211,6 +215,7 @@ namespace IronShop.Api.Controllers
          */
 
         // PUT: api/User/Profile/1
+        
         [HttpPut("Profile/{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -228,11 +233,11 @@ namespace IronShop.Api.Controllers
 
             var userToChange = new User(user.UserId, user.FullName, user.Email, (eRole)user.RoleId);
             await _service.UpdateProfile(userToChange);
-
             return NoContent();
         }
 
         // DELETE: api/User/1
+        [Authorize(policy: "RequireAdministratorRole")]
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

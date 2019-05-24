@@ -127,8 +127,6 @@ export class UserService {
           if(currentProfile.userId == user.userId){
             currentProfile.email = user.email;
             currentProfile.fullName = user.fullName;
-            currentProfile.roleId = user.roleId;
-            currentProfile.role = user.role;
             this.updateProfileInSession(currentProfile);
           }
 

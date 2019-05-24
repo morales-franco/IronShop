@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IronShop.Api.Core;
+using IronShop.Api.Core.Common;
 using IronShop.Api.Core.IServices;
 using IronShop.Api.Core.Services;
 using IronShop.Api.Data;
@@ -53,6 +54,24 @@ namespace IronShop.Api
                 });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ProductModule_AllowedRoles",
+                    policy => policy.RequireRole(((int)eRole.Admin).ToString(), ((int)eRole.ProductManager).ToString()));
+
+                options.AddPolicy("RequireAdministratorRole",
+                    policy => policy.RequireRole(((int)eRole.Admin).ToString()));
+
+                options.AddPolicy("ElevatedRightsOfStore",
+                    policy => policy.RequireRole(((int)eRole.Admin).ToString(),
+                                                 ((int)eRole.SalesManager).ToString()));
+
+                options.AddPolicy("LowRightsOfStore",
+                   policy => policy.RequireRole(((int)eRole.Employee).ToString()));
+
+
+            });
 
             services.AddAutoMapper();
 

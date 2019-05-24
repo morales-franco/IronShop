@@ -4,7 +4,7 @@ import { UserService } from "../../services/user/user.service";
 import swal from "sweetalert";
 import { Profile } from '../../models/profile.model';
 import { ModalImageUploadService } from '../../components/modal-image-upload/modal-image-upload.service';
-import { Role } from '../../models/role';
+import { Role } from '../../models/role.model';
 import { eRole } from '../../models/eRole';
 
 @Component({
@@ -147,8 +147,18 @@ export class UsersComponent implements OnInit {
         user.roleId
       );
 
+      var existRoleChanging : boolean = user.roleId != this._userService.currentUser.roleId;
+
       this._userService.updateProfile(profile)
         .subscribe(r=> {
+
+          if(profile.userId == this._userService.currentUser.userId &&
+            existRoleChanging){
+            swal("Success", "User was updated successfully but you need to login again because you have changed the Role.", "success");
+            this._userService.logout();
+            return;
+          }
+          
           swal("Success", "User was updated successfully.", "success");
           this.loadGrid();
         },

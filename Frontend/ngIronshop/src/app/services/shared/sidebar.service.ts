@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServiceModule } from '../service.module';
-import { Menu, Submenu } from '../../models/Menu';
+import { Menu, Submenu } from '../../models/menu.model';
 import { UserService } from '../user/user.service';
 import { Permission } from '../../models/permission.model';
 
@@ -10,35 +10,15 @@ import { Permission } from '../../models/permission.model';
 export class SidebarService {
 
   public menu: Menu[] = new Array<Menu>();
-  // public menu: IMenu[] = [
-  //   {
-  //     title : "Principal",
-  //     icon : "mdi mdi-gauge",
-  //     submenu : [
-  //       { title : "Home", url : "/home" },
-  //       { title : "Progress Test", url : "/progress" },
-  //       { title : "Promesas", url : "/promesas" },
-  //       { title : "Rxjs", url : "/rxjs" }
-  //     ]
-  //   },
-  //   {
-  //     title : "Configuration",
-  //     icon : "mdi mdi-folder-lock-open",
-  //     submenu : [
-  //       { title : "Users", url : "/users" },
-  //       { title : "Products", url : "/products" },
-  //       { title : "Orders", url : "/orders" }
-  //     ]
-  //   }];
 
   constructor(private _UserService : UserService) { 
-    this.setMenuByPermissions();
+
   }
 
   setMenuByPermissions(){
+    this.menu = [];
     let permissions = this._UserService.currentUser.permissions;
 
-    debugger;
     if(permissions.length == 0)
       return;
 

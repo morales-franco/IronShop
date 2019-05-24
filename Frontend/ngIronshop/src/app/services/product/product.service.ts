@@ -26,7 +26,9 @@ export class ProductService {
       url+= `&category=${category}`
     }
 
-    return this._httpClient.get(url);
+    return this._httpClient.get(url).pipe(
+      catchError(this.handleError<Product>(url))
+    );
   }
 
   getById(productId : number): Observable<Product>{

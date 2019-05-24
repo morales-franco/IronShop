@@ -19,7 +19,8 @@ namespace IronShop.Api.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    [Authorize]
+    //[Authorize(Roles ="7,8")]
+    [Authorize(policy: "ProductModule_AllowedRoles")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _service;

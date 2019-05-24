@@ -30,6 +30,7 @@ namespace IronShop.Api.Controllers
         }
 
         // GET: api/order
+        [Authorize(policy: "ElevatedRightsOfStore")]
         [HttpGet]
         [ProducesResponseType(200)]
         public async Task<ActionResult<List<OrderDto>>> GetAll()
@@ -40,6 +41,7 @@ namespace IronShop.Api.Controllers
         }
 
         //GET: api/order/id
+        [Authorize(policy: "ElevatedRightsOfStore")]
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -56,6 +58,7 @@ namespace IronShop.Api.Controllers
         }
 
         //POST: api/order
+        [Authorize(policy: "ElevatedRightsOfStore,LowRightsOfStore")]
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
