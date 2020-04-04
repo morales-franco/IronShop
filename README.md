@@ -1,44 +1,18 @@
 # IronShop
-Basic shop &amp; product management
 
-Features
+## ***Product Managment System***
 
-ABM Product
-1. Alta de Productos
-2. Modificación de Productos
-3. Eliminación de Productos
-4. Grilla de Productos
+### Tech & Patterns
+1. Repository pattern
+2. Unit of Work
+3. n-layer architecture
+4. service-pattern architecture
+5. Net Core 2.1 & Angular
 
-Compra, buy!
-1. Grilla con Fotos - Agregar al carrito (Parte Izquierda)
-2. Cart - Carrito de compra (Parte derecha)
-3. Confirm Order!
+### Features
+1. Membership module
+2. Generic Image uploader
+3. Product Module
+4. Search Module
+5. User Module
 
-
-----------------------------------
-Business Data Base
-
-Product
-productId: number;
-categoryId: string;
-price: number;
-name: string;
-description: string;
-
-Category
-categoryId: number
-description: string;
-
-Order
-orderId: number;
-orderDate: Date
-userId: string
-items: Array<OrderItem> = new Array<OrderItem>();
-
-OrderItem
-orderItemId number;
-orderId
-quantity: number;
-unitPrice: number;
-productId: number;
-productCategory: string;
